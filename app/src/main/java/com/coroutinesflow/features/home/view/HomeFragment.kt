@@ -3,6 +3,7 @@ package com.coroutinesflow.features.home.view
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.coroutinesflow.R
 import com.coroutinesflow.base.data.APIState
@@ -32,13 +33,14 @@ class HomeFragment : BaseScreenFragment() {
                 MarvelHomeLocalDataStore()
             )
         )
-
         with(ViewModelProvider(this, factory).get(HomeViewModel::class.java)) {
-            getListOfMarvelHeroesCharacters().observeForever {
-                when (it) {
-                    is APIState.LoadingState -> setLoadingIndicatorVisibility(View.VISIBLE)
-                    is APIState.DataStat -> showContent(it.value.data.results)
-                    is APIState.ErrorState -> showErrorContent(it)
+            lifecycleScope.launchWhenCreated {
+                getListOfMarvelHeroesCharacters().observeForever {
+                    when (it) {
+                        is APIState.LoadingState -> setLoadingIndicatorVisibility(View.VISIBLE)
+                        is APIState.DataStat -> showContent(it.value.data.results)
+                        is APIState.ErrorState -> showErrorContent(it)
+                    }
                 }
             }
         }

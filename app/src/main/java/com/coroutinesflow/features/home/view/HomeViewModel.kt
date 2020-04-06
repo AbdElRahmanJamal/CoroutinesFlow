@@ -1,35 +1,55 @@
 package com.coroutinesflow.features.home.view
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.coroutinesflow.base.data.APIState
+import com.coroutinesflow.base.view.BaseViewModel
 import com.coroutinesflow.features.home.data.MarvelHomeRepository
 import com.coroutinesflow.features.home.model.MarvelCharacters
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
+
+const val LIMIT = "limit"
+const val OFFSET = "offset"
 
 class HomeViewModel(
     private val homeRepository: MarvelHomeRepository
-    , private val mainDispatcher: CoroutineDispatcher = Dispatchers.Main
-) : ViewModel() {
+    , mainDispatcher: CoroutineDispatcher = Dispatchers.Main
+) : BaseViewModel(mainDispatcher) {
 
     private val listOfMarvelHeroesCharacters = MutableLiveData<APIState<MarvelCharacters>>()
-    @ExperimentalCoroutinesApi
-    fun getDataFlowState(limit: Int = 10, offset: Int = 0) {
-        viewModelScope.launch {
-            CoroutineScope(mainDispatcher).launch {
-                homeRepository.getListOfMarvelHeroesCharacters(limit, offset).collect {
-                    listOfMarvelHeroesCharacters.postValue(it)
-                }
-            }
-        }
-    }
 
     @ExperimentalCoroutinesApi
-    fun getListOfMarvelHeroesCharacters(limit: Int = 10, offset: Int = 0): MutableLiveData<APIState<MarvelCharacters>> {
-        getDataFlowState(limit, offset)
+    fun getListOfMarvelHeroesCharacters(
+        limit: Int = 10,
+        offset: Int = 0
+    ): MutableLiveData<APIState<MarvelCharacters>> {
+        val data = createApiParameter(limit, offset)
+
+        loadData(data)
+
         return listOfMarvelHeroesCharacters
     }
 
+    private fun createApiParameter(
+        limit: Int,
+        offset: Int
+    ): HashMap<Any, Any> {
+        val data = HashMap<Any, Any>()
+
+        data[LIMIT] = limit
+        data[OFFSET] = offset
+        return data
+    }
+
+    @ExperimentalCoroutinesApi
+    override suspend fun callCustomAPI(data: HashMap<Any, Any>) {
+        val limit = data.getValue(LIMIT) as Int
+        val offset = data.getValue(OFFSET) as Int
+
+        homeRepository.getListOfMarvelHeroesCharacters(limit, offset).collect {
+            listOfMarvelHeroesCharacters.postValue(it)
+        }
+    }
 }
