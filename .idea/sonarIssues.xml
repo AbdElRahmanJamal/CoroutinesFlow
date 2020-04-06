@@ -238,6 +238,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/model/MarvelHeroesUIModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/model/Results.kt">
           <value>
             <set />
@@ -454,6 +459,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/gradle.properties">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../MVF-Android/app/src/main/java/com/vis/meinvodafone/utils/constants/NetworkConstants.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../MVF-Android/app/src/main/java/com/vis/meinvodafone/vf/webview/view/VfWebViewBaseFragment.java">
           <value>
             <set />
           </value>

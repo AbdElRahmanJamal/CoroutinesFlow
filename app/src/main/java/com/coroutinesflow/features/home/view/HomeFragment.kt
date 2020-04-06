@@ -2,6 +2,7 @@ package com.coroutinesflow.features.home.view
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import com.coroutinesflow.base.view.BaseScreenFragment
 import com.coroutinesflow.features.home.data.MarvelHomeLocalDataStore
 import com.coroutinesflow.features.home.data.MarvelHomeRemoteDataStore
 import com.coroutinesflow.features.home.data.MarvelHomeRepository
+import com.coroutinesflow.features.home.model.MarvelHeroesUIModel
 import com.coroutinesflow.features.home.model.Results
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -48,7 +50,12 @@ class HomeFragment : BaseScreenFragment() {
 
     private fun showContent(results: List<Results>) {
         super.showScreenContent()
-        marvelHeroesAdapter.setMarvelCharacters(results)
+        val marvelHeroesUIModel = MarvelHeroesUIModel(results as MutableList<Results>, null)
+        marvelHeroesAdapter.setMarvelCharacters(marvelHeroesUIModel.apply {
+            onMarvelHeroClicked = {
+                Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun initRecView() {
