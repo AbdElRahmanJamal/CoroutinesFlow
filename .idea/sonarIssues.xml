@@ -43,6 +43,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.koin/koin-core/1.0.2/86c2f8f77dc74a22979a2965e99308b0315135e3/koin-core-1.0.2-sources.jar!/org/koin/core/KoinContext.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/build.gradle">
           <value>
             <set />
@@ -219,6 +224,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/data/di/MarvelHomeHeroesDependancyInjection.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/data/di/MarvelHomeHeroesDependencyInjection.kt">
           <value>
             <set />
           </value>

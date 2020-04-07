@@ -8,7 +8,7 @@ import org.koin.dsl.module.Module
 import org.koin.dsl.module.module
 
 
-object MarvelHomeHeroesDependancyInjection {
+object MarvelHomeHeroesDependencyInjection {
 
     val homeViewModelFactoryObject: Module = module {
         factory { HomeViewModelFactory(get()) }
