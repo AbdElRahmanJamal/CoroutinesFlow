@@ -13,6 +13,11 @@
             <set />
           </value>
         </entry>
+        <entry key="/fragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="/fragment.kt">
           <value>
             <set />
@@ -59,6 +64,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/build/tmp/kapt3/stubs/debug/com/coroutinesflow/features/home/data/model/Results.java">
           <value>
             <set />
           </value>
@@ -239,6 +249,96 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/data/di/MarvelHomeHeroesDependencyInjection.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/data/local_datastore/DB/DatabaseListConverter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/data/local_datastore/DB/MarvelCharactersDB.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/data/local_datastore/DB/MarvelCharactersDao.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/data/local_datastore/DatabaseListConverter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/data/local_datastore/ItemsDataConverter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/data/local_datastore/MarvelCharactersDB.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/data/local_datastore/MarvelCharactersDao.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/data/local_datastore/MarvelHomeLocalDataStore.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/data/local_datastore/db/DatabaseListConverter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/data/local_datastore/db/MarvelCharactersDB.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/data/local_datastore/db/MarvelCharactersDao.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/data/model/Comics.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/data/model/Data.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/data/model/Events.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/data/model/MarvelCharacters.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/data/model/Results.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/data/model/Series.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/data/model/Stories.kt">
           <value>
             <set />
           </value>
@@ -499,6 +599,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../MVF-Android/app/src/main/java/com/vis/meinvodafone/utils/constants/NetworkConstants.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../MVF-Android/app/src/main/java/com/vis/meinvodafone/vf/home/service/MvfDataForecastService.java">
           <value>
             <set />
           </value>

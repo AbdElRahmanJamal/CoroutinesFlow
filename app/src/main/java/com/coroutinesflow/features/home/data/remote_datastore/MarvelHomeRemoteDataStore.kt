@@ -1,10 +1,9 @@
 package com.coroutinesflow.features.home.data.remote_datastore
 
 import com.coroutinesflow.base.data.APIs
-import com.coroutinesflow.features.home.model.MarvelCharacters
+import com.coroutinesflow.features.home.data.model.MarvelCharacters
 import com.coroutinesflow.frameworks.network.getRemoteDate
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 class MarvelHomeRemoteDataStore(

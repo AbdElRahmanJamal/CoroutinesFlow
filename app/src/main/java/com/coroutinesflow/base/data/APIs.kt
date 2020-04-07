@@ -1,6 +1,6 @@
 package com.coroutinesflow.base.data
 
-import com.coroutinesflow.features.home.model.MarvelCharacters
+import com.coroutinesflow.features.home.data.model.MarvelCharacters
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

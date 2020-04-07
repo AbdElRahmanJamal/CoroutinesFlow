@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.coroutinesflow.base.data.APIState
 import com.coroutinesflow.base.view.BaseViewModel
 import com.coroutinesflow.features.home.data.MarvelHomeRepository
-import com.coroutinesflow.features.home.model.MarvelCharacters
+import com.coroutinesflow.features.home.data.model.Results
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -18,13 +18,13 @@ class HomeViewModel(
     , mainDispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : BaseViewModel(mainDispatcher) {
 
-    private val listOfMarvelHeroesCharacters = MutableLiveData<APIState<MarvelCharacters>>()
+    private val listOfMarvelHeroesCharacters = MutableLiveData<APIState<List<Results>>>()
 
     @ExperimentalCoroutinesApi
     fun getListOfMarvelHeroesCharacters(
         limit: Int = 10,
         offset: Int = 0
-    ): MutableLiveData<APIState<MarvelCharacters>> {
+    ): MutableLiveData<APIState<List<Results>>> {
         val data = createApiParameter(limit, offset)
 
         loadData(data)

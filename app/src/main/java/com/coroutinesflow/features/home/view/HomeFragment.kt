@@ -10,8 +10,8 @@ import com.coroutinesflow.R
 import com.coroutinesflow.base.data.APIState
 import com.coroutinesflow.base.view.BaseScreenFragment
 import com.coroutinesflow.features.home.data.di.MarvelHomeHeroesDependencyInjection.homeViewModelFactoryObject
-import com.coroutinesflow.features.home.model.MarvelHeroesUIModel
-import com.coroutinesflow.features.home.model.Results
+import com.coroutinesflow.features.home.data.model.MarvelHeroesUIModel
+import com.coroutinesflow.features.home.data.model.Results
 import com.coroutinesflow.frameworks.network.apiFactory
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -42,7 +42,7 @@ class HomeFragment : BaseScreenFragment() {
                 getListOfMarvelHeroesCharacters().observeForever {
                     when (it) {
                         is APIState.LoadingState -> setLoadingIndicatorVisibility(View.VISIBLE)
-                        is APIState.DataStat -> showContent(it.value.data.results)
+                        is APIState.DataStat -> showContent(it.value)
                         is APIState.ErrorState -> showErrorContent(it)
                     }
                 }

@@ -1,14 +1,15 @@
-package com.coroutinesflow.features.home.model
+package com.coroutinesflow.features.home.data.model
 
 import android.os.Parcelable
+import androidx.room.TypeConverters
+import com.coroutinesflow.features.home.data.local_datastore.db.ItemsDataConverter
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Series(
-
+data class Comics(
     @SerializedName("available") val available: Int,
     @SerializedName("collectionURI") val collectionURI: String?,
-    @SerializedName("items") val items: List<Items>?,
+    @TypeConverters(ItemsDataConverter::class)@SerializedName("items") val items: List<Items>?,
     @SerializedName("returned") val returned: Int
 ) : Parcelable

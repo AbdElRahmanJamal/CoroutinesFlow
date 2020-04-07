@@ -1,9 +1,8 @@
-package com.coroutinesflow.features.home.model
+package com.coroutinesflow.features.home.data.model
 
 import android.os.Parcelable
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
+import com.coroutinesflow.features.home.data.local_datastore.db.URlsDataConverter
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
@@ -23,5 +22,5 @@ data class Results(
     @Embedded(prefix = "series_") @SerializedName("series") val series: Series?,
     @Embedded(prefix = "stories_") @SerializedName("stories") val stories: Stories?,
     @Embedded(prefix = "events_") @SerializedName("events") val events: Events?,
-    @SerializedName("urls") val urls: List<Urls>?
+    @TypeConverters(URlsDataConverter::class) @SerializedName("urls") val urls: List<Urls>?
 ) : Parcelable

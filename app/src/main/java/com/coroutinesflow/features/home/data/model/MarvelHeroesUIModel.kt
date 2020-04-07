@@ -1,4 +1,4 @@
-package com.coroutinesflow.features.home.model
+package com.coroutinesflow.features.home.data.model
 
 class MarvelHeroesUIModel(
     val results: MutableList<Results>,

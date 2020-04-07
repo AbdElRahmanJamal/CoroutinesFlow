@@ -1,4 +1,4 @@
-package com.coroutinesflow.features.home.model
+package com.coroutinesflow.features.home.data.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
