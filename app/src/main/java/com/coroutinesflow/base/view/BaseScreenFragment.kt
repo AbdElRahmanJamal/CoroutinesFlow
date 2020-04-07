@@ -28,11 +28,14 @@ abstract class BaseScreenFragment : Fragment() {
         val inflate = inflater.inflate(R.layout.fragment_base_screen, container, false)
         fragmentView = inflater.inflate(getLayoutId(), null, false) as ViewGroup
         inflate.base_fragment_container.addView(fragmentView, 0)
+        startKoinDependancyInjection()
         return inflate
     }
 
     protected abstract fun getLayoutId(): Int
     protected abstract fun getScreenTitle(): String
+    protected abstract fun startKoinDependancyInjection()
+    protected abstract fun stopKoinDependancyInjection()
 
     protected fun setLoadingIndicatorVisibility(visibility: Int) {
         lottie_loading?.apply {
@@ -56,5 +59,10 @@ abstract class BaseScreenFragment : Fragment() {
 
     private fun setScreenTitle(title: String) {
         (activity as? AppCompatActivity)?.supportActionBar?.title = title
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopKoinDependancyInjection()
     }
 }

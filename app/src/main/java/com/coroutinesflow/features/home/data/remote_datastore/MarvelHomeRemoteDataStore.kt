@@ -1,4 +1,4 @@
-package com.coroutinesflow.features.home.data
+package com.coroutinesflow.features.home.data.remote_datastore
 
 import com.coroutinesflow.base.data.APIs
 import com.coroutinesflow.features.home.model.MarvelCharacters

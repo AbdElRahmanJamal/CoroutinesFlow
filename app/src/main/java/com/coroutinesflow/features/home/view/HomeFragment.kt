@@ -9,19 +9,30 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.coroutinesflow.R
 import com.coroutinesflow.base.data.APIState
 import com.coroutinesflow.base.view.BaseScreenFragment
-import com.coroutinesflow.features.home.data.MarvelHomeLocalDataStore
-import com.coroutinesflow.features.home.data.MarvelHomeRemoteDataStore
 import com.coroutinesflow.features.home.data.MarvelHomeRepository
+import com.coroutinesflow.features.home.data.di.MarvelHomeHeroesDependancyInjection.homeViewModelFactoryObject
+import com.coroutinesflow.features.home.data.local_datastore.MarvelHomeLocalDataStore
+import com.coroutinesflow.features.home.data.remote_datastore.MarvelHomeRemoteDataStore
 import com.coroutinesflow.features.home.model.MarvelHeroesUIModel
 import com.coroutinesflow.features.home.model.Results
+import com.coroutinesflow.frameworks.network.apiFactory
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.get
+import org.koin.android.ext.android.startKoin
+import org.koin.standalone.StandAloneContext.stopKoin
 
 class HomeFragment : BaseScreenFragment() {
 
     override fun getLayoutId() = R.layout.home_fragment
     override fun getScreenTitle(): String = ""
+    override fun startKoinDependancyInjection() {
+        startKoin(context!!.applicationContext, listOf(apiFactory, homeViewModelFactoryObject))
+    }
+
+    override fun stopKoinDependancyInjection() {
+        stopKoin()
+    }
 
     private lateinit var marvelHeroesAdapter: MarvelHeroesAdapter
 
@@ -31,7 +42,9 @@ class HomeFragment : BaseScreenFragment() {
         initRecView()
         val factory = HomeViewModelFactory(
             MarvelHomeRepository(
-                MarvelHomeRemoteDataStore(get()),
+                MarvelHomeRemoteDataStore(
+                    get()
+                ),
                 MarvelHomeLocalDataStore()
             )
         )
