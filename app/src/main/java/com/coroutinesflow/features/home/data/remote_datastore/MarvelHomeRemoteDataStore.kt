@@ -9,7 +9,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 class MarvelHomeRemoteDataStore(
     private val aPIs: APIs,
-    private val iODispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val iODispatcher: CoroutineDispatcher
 ) {
 
     @ExperimentalCoroutinesApi

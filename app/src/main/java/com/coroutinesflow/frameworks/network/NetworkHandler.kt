@@ -7,11 +7,12 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
 import retrofit2.Response
 
 @ExperimentalCoroutinesApi
 suspend fun <RESPONSE : BaseModel<RESPONSE>> getRemoteDate(
-    iODispatcher: CoroutineDispatcher = Dispatchers.IO,
+    iODispatcher: CoroutineDispatcher,
     function: suspend NetworkHandler<RESPONSE>. () -> Response<RESPONSE>
 ): Flow<APIState<RESPONSE>> = NetworkHandler<RESPONSE>().getRemoteDataAPI(function, iODispatcher)
 
@@ -25,7 +26,11 @@ class NetworkHandler<RESPONSE : Any> {
     ): Flow<APIState<RESPONSE>> =
         flow {
             runCatching {
-                function.invoke(this@NetworkHandler)
+
+                withContext(iODispatcher) {
+                    function.invoke(this@NetworkHandler)
+                }
+
             }.onSuccess {
                 if (it.isSuccessful && it.body() is RESPONSE) {
                     emit(getDataOrThrowException(it))
