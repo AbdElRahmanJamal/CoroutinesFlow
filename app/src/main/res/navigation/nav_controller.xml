@@ -7,6 +7,19 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.coroutinesflow.features.home.view.HomeFragment"
-        tools:layout="@layout/home_fragment" />
+        android:name="com.coroutinesflow.features.heroes_home.view.HomeFragment"
+        tools:layout="@layout/home_fragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_heroDetailsFragment"
+            app:destination="@id/heroDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/heroDetailsFragment"
+        android:name="com.coroutinesflow.features.hero_details.HeroDetailsFragment"
+        android:label="hero_details_fragment"
+        tools:layout="@layout/hero_details_fragment" >
+        <argument
+            android:name="HeroItem"
+            app:argType="com.coroutinesflow.features.heroes_home.data.model.Results" />
+    </fragment>
 </navigation>

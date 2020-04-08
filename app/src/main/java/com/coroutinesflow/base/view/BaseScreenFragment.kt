@@ -61,8 +61,8 @@ abstract class BaseScreenFragment : Fragment() {
         (activity as? AppCompatActivity)?.supportActionBar?.title = title
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         stopKoinDependancyInjection()
     }
 }

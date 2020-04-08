@@ -218,6 +218,56 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/hero_details/HeroDetailsFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/hero_details/HeroDetailsViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/heroes_home/data/MarvelHomeRepository.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/heroes_home/data/local_datastore/db/MarvelCharactersDao.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/heroes_home/data/model/MarvelCharacters.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/heroes_home/data/model/Results.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/heroes_home/data/model/Urls.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/heroes_home/data/remote_datastore/MarvelHomeRemoteDataStore.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/heroes_home/view/HomeFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/heroes_home/view/MarvelHeroesAdapter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/home/MarvelCharacters.kt">
           <value>
             <set />
@@ -618,6 +668,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../MVF-Android/app/src/main/java/com/vis/meinvodafone/vf/offers/details/service/VfAngeboteProlongationService.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../MVF-Android/app/src/main/java/com/vis/meinvodafone/vf/offers/overview/View/AngeboteAdapter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../MVF-Android/app/src/main/java/com/vis/meinvodafone/vf/vov/presenter/VfVOVTilePresenter.java">
           <value>
             <set />
@@ -634,6 +694,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../MVF-Android/app/src/main/java/com/vis/meinvodafone/view/core/BaseActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../MVF-Android/app/src/main/res/layout/vf_layout_vov_item_offer.xml">
           <value>
             <set />
           </value>
