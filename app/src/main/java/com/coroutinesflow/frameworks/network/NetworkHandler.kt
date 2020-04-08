@@ -3,13 +3,11 @@ package com.coroutinesflow.frameworks.network
 import com.coroutinesflow.AppExceptions
 import com.coroutinesflow.base.data.APIState
 import com.coroutinesflow.base.data.BaseModel
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.withContext
 import retrofit2.Response
 
+const val TIME_OUT_IN_MILLIS_SECOND = 5000L
 @ExperimentalCoroutinesApi
 suspend fun <RESPONSE : BaseModel<RESPONSE>> getRemoteDate(
     iODispatcher: CoroutineDispatcher,
@@ -26,11 +24,11 @@ class NetworkHandler<RESPONSE : Any> {
     ): Flow<APIState<RESPONSE>> =
         flow {
             runCatching {
-
-                withContext(iODispatcher) {
-                    function.invoke(this@NetworkHandler)
+                withTimeout(TIME_OUT_IN_MILLIS_SECOND) {
+                    withContext(iODispatcher) {
+                        function.invoke(this@NetworkHandler)
+                    }
                 }
-
             }.onSuccess {
                 if (it.isSuccessful && it.body() is RESPONSE) {
                     emit(getDataOrThrowException(it))

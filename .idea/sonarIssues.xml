@@ -48,6 +48,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core/1.3.3/57f8b1a2d7c5816e5b93e39f75b9e341d2045d1b/kotlinx-coroutines-core-1.3.3-sources.jar!/commonMain/Timeout.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core/1.3.3/57f8b1a2d7c5816e5b93e39f75b9e341d2045d1b/kotlinx-coroutines-core-1.3.3-sources.jar!/jvmMain/Dispatchers.kt">
           <value>
             <set />
@@ -598,6 +603,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../MVF-Android/CoreModel/src/main/java/com/vis/meinvodafone/vf/offers/overview/model/VfTargetCampaign.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../MVF-Android/app/src/main/java/com/vis/meinvodafone/utils/constants/NetworkConstants.java">
           <value>
             <set />
@@ -608,7 +618,22 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../MVF-Android/app/src/main/java/com/vis/meinvodafone/vf/vov/presenter/VfVOVTilePresenter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../MVF-Android/app/src/main/java/com/vis/meinvodafone/vf/vov/service/VfVOVService.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../MVF-Android/app/src/main/java/com/vis/meinvodafone/vf/webview/view/VfWebViewBaseFragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../MVF-Android/app/src/main/java/com/vis/meinvodafone/view/core/BaseActivity.java">
           <value>
             <set />
           </value>
