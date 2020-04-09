@@ -10,6 +10,8 @@ import com.coroutinesflow.R
 import com.coroutinesflow.base.data.APIState
 import kotlinx.android.synthetic.main.fragment_base_screen.*
 import kotlinx.android.synthetic.main.fragment_base_screen.view.*
+import org.koin.android.ext.android.getKoin
+import org.koin.core.Koin
 
 /**
  * A simple [Fragment] subclass.
@@ -28,6 +30,7 @@ abstract class BaseScreenFragment : Fragment() {
         val inflate = inflater.inflate(R.layout.fragment_base_screen, container, false)
         fragmentView = inflater.inflate(getLayoutId(), null, false) as ViewGroup
         inflate.base_fragment_container.addView(fragmentView, 0)
+        stopKoinDependancyInjection()
         startKoinDependancyInjection()
         return inflate
     }
@@ -62,7 +65,7 @@ abstract class BaseScreenFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         stopKoinDependancyInjection()
+        super.onDestroyView()
     }
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.coroutinesflow.base.data.APIState
 import com.coroutinesflow.base.view.BaseViewModel
 import com.coroutinesflow.features.heroes_home.data.MarvelHomeRepository
-import com.coroutinesflow.features.heroes_home.data.model.Results
+import com.coroutinesflow.features.heroes_home.data.entities.Results
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -45,11 +45,12 @@ class HomeViewModel(
 
     @ExperimentalCoroutinesApi
     override suspend fun callCustomAPI(data: HashMap<Any, Any>) {
+
         val limit = data.getValue(LIMIT) as Int
         val offset = data.getValue(OFFSET) as Int
 
         homeRepository.getListOfMarvelHeroesCharacters(limit, offset).collect {
-            listOfMarvelHeroesCharacters.postValue(it)
+            listOfMarvelHeroesCharacters.value = it
         }
     }
 }

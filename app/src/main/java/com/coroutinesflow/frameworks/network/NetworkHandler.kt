@@ -7,7 +7,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import retrofit2.Response
 
-const val TIME_OUT_IN_MILLIS_SECOND = 5000L
+const val TIME_OUT_IN_MILLIS_SECOND = 10000L
 @ExperimentalCoroutinesApi
 suspend fun <RESPONSE : BaseModel<RESPONSE>> getRemoteDate(
     iODispatcher: CoroutineDispatcher,
@@ -38,8 +38,6 @@ class NetworkHandler<RESPONSE : Any> {
             }.onFailure {
                 emit(APIState.ErrorState(it))
             }
-        }.onStart {
-            emit(APIState.LoadingState)
         }.catch {
             emit(APIState.ErrorState(AppExceptions.GenericErrorException))
         }.flowOn(iODispatcher)

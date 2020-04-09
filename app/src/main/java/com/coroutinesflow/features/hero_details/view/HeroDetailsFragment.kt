@@ -1,0 +1,151 @@
+package com.coroutinesflow.features.hero_details.view
+
+import android.os.Bundle
+import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.coroutinesflow.R
+import com.coroutinesflow.base.data.APIState
+import com.coroutinesflow.base.view.BaseScreenFragment
+import com.coroutinesflow.features.hero_details.data.di.MarvelHeroDetailsDependencyInjection.heroDetailsViewModelFactoryObject
+import com.coroutinesflow.features.hero_details.data.entities.HeroDetailsScreenSections
+import com.coroutinesflow.features.heroes_home.data.entities.Results
+import com.coroutinesflow.frameworks.network.apiFactory
+import kotlinx.android.synthetic.main.hero_details_fragment.*
+import kotlinx.android.synthetic.main.marvel_page_details_section.view.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.android.ext.android.get
+import org.koin.android.ext.android.startKoin
+import org.koin.standalone.StandAloneContext.stopKoin
+
+const val COMICS = "Comics"
+const val SERIES = "Series"
+const val STORIES = "Stories"
+const val EVENTS = "Events"
+
+class HeroDetailsFragment : BaseScreenFragment() {
+
+    private lateinit var heroModel: Results
+    private val heroDetailsAdapterComics = HeroDetailsAdapter()
+    private val heroDetailsAdapterSeries = HeroDetailsAdapter()
+    private val heroDetailsAdapterStories = HeroDetailsAdapter()
+    private val heroDetailsAdapterEvents = HeroDetailsAdapter()
+
+    override fun getLayoutId() = R.layout.hero_details_fragment
+
+    override fun getScreenTitle() = ""
+
+    override fun startKoinDependancyInjection() = startKoin(
+        context!!.applicationContext, listOf(apiFactory, heroDetailsViewModelFactoryObject)
+    )
+
+    override fun stopKoinDependancyInjection() = stopKoin()
+
+    @ExperimentalCoroutinesApi
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        arguments?.let { bundle ->
+            heroModel = HeroDetailsFragmentArgs.fromBundle(bundle).marvelHeroItem
+
+            showScreenContent()
+            initComicsRecView()
+            initSeriesRecView()
+            initStoriesRecView()
+            initEventsRecView()
+
+            val factory: HeroDetailsViewModelFactory = get()
+
+            with(ViewModelProvider(this, factory).get(HeroDetailsViewModel::class.java)) {
+
+                getHeroDetailsPageDataComicsSeriesStoriesEvents(heroModel.id)
+                    .observe(viewLifecycleOwner, Observer {
+                        when (it.first) {
+                            HeroDetailsScreenSections.COMICS -> {
+                                comics.section_title.text = COMICS
+                                handleSectionStates(it.second, comics)
+                            }
+                            HeroDetailsScreenSections.STORIES -> {
+                                stories.section_title.text = STORIES
+                                handleSectionStates(it.second, stories)
+                            }
+                            HeroDetailsScreenSections.SERIES -> {
+                                series.section_title.text = SERIES
+                                handleSectionStates(it.second, series)
+                            }
+                            HeroDetailsScreenSections.EVENTS -> {
+                                events.section_title.text = EVENTS
+                                handleSectionStates(it.second, events)
+                            }
+                        }
+                    })
+            }
+        }
+    }
+
+    private fun initComicsRecView() {
+        comics.marvel_character_section_recView.apply {
+            layoutManager = LinearLayoutManager(
+                this@HeroDetailsFragment.context,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
+            adapter = heroDetailsAdapterComics
+        }
+    }
+
+    private fun initStoriesRecView() {
+        stories.marvel_character_section_recView.apply {
+            layoutManager = LinearLayoutManager(
+                this@HeroDetailsFragment.context,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
+            adapter = heroDetailsAdapterStories
+        }
+    }
+
+    private fun initSeriesRecView() {
+        series.marvel_character_section_recView.apply {
+            layoutManager = LinearLayoutManager(
+                this@HeroDetailsFragment.context,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
+            adapter = heroDetailsAdapterSeries
+        }
+    }
+
+    private fun initEventsRecView() {
+        events.marvel_character_section_recView.apply {
+            layoutManager = LinearLayoutManager(
+                this@HeroDetailsFragment.context,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
+            adapter = heroDetailsAdapterEvents
+        }
+    }
+
+    private fun handleSectionStates(
+        state: APIState<List<Results>>,
+        view: View
+    ) {
+        when (state) {
+            is APIState.LoadingState -> view.loading_indicator.visibility = View.VISIBLE
+
+            is APIState.ErrorState -> {
+                view.loading_indicator.visibility = View.GONE
+                showErrorContent(state)
+            }
+
+            is APIState.DataStat -> {
+                view.loading_indicator.visibility = View.GONE
+                view.marvel_character_section_recView.visibility = View.VISIBLE
+                val marvelHeroesAdapter =
+                    view.marvel_character_section_recView.adapter as HeroDetailsAdapter
+                marvelHeroesAdapter.setMarvelHeroCharacterSectionList(state.value)
+            }
+        }
+    }
+}

@@ -1,4 +1,4 @@
-package com.coroutinesflow.features.heroes_home.data.model
+package com.coroutinesflow.features.heroes_home.data.entities
 
 import android.os.Parcelable
 import androidx.room.TypeConverters
@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Series(
+data class Events(
 
     @SerializedName("available") val available: Int,
     @SerializedName("collectionURI") val collectionURI: String?,

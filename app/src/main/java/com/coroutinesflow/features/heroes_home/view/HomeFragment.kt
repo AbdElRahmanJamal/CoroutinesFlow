@@ -2,6 +2,7 @@ package com.coroutinesflow.features.heroes_home.view
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -10,8 +11,8 @@ import com.coroutinesflow.R
 import com.coroutinesflow.base.data.APIState
 import com.coroutinesflow.base.view.BaseScreenFragment
 import com.coroutinesflow.features.heroes_home.data.di.MarvelHomeHeroesDependencyInjection.homeViewModelFactoryObject
-import com.coroutinesflow.features.heroes_home.data.model.MarvelHeroesUIModel
-import com.coroutinesflow.features.heroes_home.data.model.Results
+import com.coroutinesflow.features.heroes_home.data.entities.MarvelHeroesUIModel
+import com.coroutinesflow.features.heroes_home.data.entities.Results
 import com.coroutinesflow.frameworks.network.apiFactory
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -38,15 +39,13 @@ class HomeFragment : BaseScreenFragment() {
         initRecView()
         val factory: HomeViewModelFactory = get()
         with(ViewModelProvider(this, factory).get(HomeViewModel::class.java)) {
-            lifecycleScope.launchWhenCreated {
-                getListOfMarvelHeroesCharacters().observeForever {
-                    when (it) {
-                        is APIState.LoadingState -> setLoadingIndicatorVisibility(View.VISIBLE)
-                        is APIState.DataStat -> showContent(it.value)
-                        is APIState.ErrorState -> showErrorContent(it)
-                    }
+            getListOfMarvelHeroesCharacters().observe(viewLifecycleOwner, Observer {
+                when (it) {
+                    is APIState.LoadingState -> setLoadingIndicatorVisibility(View.VISIBLE)
+                    is APIState.DataStat -> showContent(it.value)
+                    is APIState.ErrorState -> showErrorContent(it)
                 }
-            }
+            })
         }
     }
 
@@ -63,7 +62,7 @@ class HomeFragment : BaseScreenFragment() {
     private fun goToHereDetailsPage(hero: Results) {
         view?.let {
             val goToDetails =
-                HomeFragmentDirections.actionHomeFragmentToHeroDetailsFragment(hero)
+                HomeFragmentDirections.actionHomeFragmentToHeroDetailsFragment2(hero)
             Navigation.findNavController(it).navigate(goToDetails)
         }
     }
