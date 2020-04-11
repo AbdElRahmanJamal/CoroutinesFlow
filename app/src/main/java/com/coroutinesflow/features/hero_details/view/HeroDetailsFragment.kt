@@ -9,7 +9,6 @@ import com.coroutinesflow.R
 import com.coroutinesflow.base.data.APIState
 import com.coroutinesflow.base.view.BaseScreenFragment
 import com.coroutinesflow.features.hero_details.data.di.MarvelHeroDetailsDependencyInjection.heroDetailsViewModelFactoryObject
-import com.coroutinesflow.features.hero_details.data.entities.HeroDetailsScreenSections
 import com.coroutinesflow.features.heroes_home.data.entities.Results
 import com.coroutinesflow.frameworks.network.apiFactory
 import kotlinx.android.synthetic.main.hero_details_fragment.*
@@ -58,27 +57,31 @@ class HeroDetailsFragment : BaseScreenFragment() {
 
             with(ViewModelProvider(this, factory).get(HeroDetailsViewModel::class.java)) {
 
-                getHeroDetailsPageDataComicsSeriesStoriesEvents(heroModel.id)
+
+                getHeroDetailsPageDataComics(heroModel.id)
                     .observe(viewLifecycleOwner, Observer {
-                        when (it.first) {
-                            HeroDetailsScreenSections.COMICS -> {
-                                comics.section_title.text = COMICS
-                                handleSectionStates(it.second, comics)
-                            }
-                            HeroDetailsScreenSections.STORIES -> {
-                                stories.section_title.text = STORIES
-                                handleSectionStates(it.second, stories)
-                            }
-                            HeroDetailsScreenSections.SERIES -> {
-                                series.section_title.text = SERIES
-                                handleSectionStates(it.second, series)
-                            }
-                            HeroDetailsScreenSections.EVENTS -> {
-                                events.section_title.text = EVENTS
-                                handleSectionStates(it.second, events)
-                            }
-                        }
+                        comics.section_title.text = COMICS
+                        handleSectionStates(it, comics)
                     })
+
+                getHeroDetailsPageDataSeries(heroModel.id)
+                    .observe(viewLifecycleOwner, Observer {
+                        series.section_title.text = SERIES
+                        handleSectionStates(it, series)
+                    })
+
+                getHeroDetailsPageDataStories(heroModel.id)
+                    .observe(viewLifecycleOwner, Observer {
+                        stories.section_title.text = STORIES
+                        handleSectionStates(it, stories)
+                    })
+
+                getHeroDetailsPageDataEvents(heroModel.id)
+                    .observe(viewLifecycleOwner, Observer {
+                        events.section_title.text = EVENTS
+                        handleSectionStates(it, events)
+                    })
+
             }
         }
     }

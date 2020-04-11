@@ -12,12 +12,10 @@ import org.koin.dsl.module.module
 object MarvelHeroDetailsDependencyInjection {
 
     val heroDetailsViewModelFactoryObject: Module = module {
-        factory { HeroDetailsViewModelFactory(get()) }
-        factory { HeroDetailsUseCase(get(), get()) }
+        factory { HeroDetailsViewModelFactory(get(), Dispatchers.Main) }
+        factory { HeroDetailsUseCase(get(), Dispatchers.Main) }
         factory { HeroDetailsRepository(get(), get()) }
-        factory { HeroDetailsRemoteDataStore(get(), get()) }
+        factory { HeroDetailsRemoteDataStore(get(), Dispatchers.Main) }
         factory { HeroDetailsLocalDataStore() }
-        single { Dispatchers.IO }
     }
-
 }

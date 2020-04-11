@@ -1,22 +1,18 @@
 package com.coroutinesflow.features.heroes_home.view
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.coroutinesflow.base.data.APIState
-import com.coroutinesflow.base.view.BaseViewModel
 import com.coroutinesflow.features.heroes_home.data.MarvelHomeRepository
 import com.coroutinesflow.features.heroes_home.data.entities.Results
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
-
-const val LIMIT = "limit"
-const val OFFSET = "offset"
 
 class HomeViewModel(
     private val homeRepository: MarvelHomeRepository
-    , mainDispatcher: CoroutineDispatcher = Dispatchers.Main
-) : BaseViewModel(mainDispatcher) {
+    , private val mainDispatcher: CoroutineDispatcher
+) : ViewModel() {
 
     private val listOfMarvelHeroesCharacters = MutableLiveData<APIState<List<Results>>>()
 
@@ -25,32 +21,16 @@ class HomeViewModel(
         limit: Int = 10,
         offset: Int = 0
     ): MutableLiveData<APIState<List<Results>>> {
-        val data = createApiParameter(limit, offset)
 
-        loadData(data)
+        viewModelScope.launch {
+            CoroutineScope(mainDispatcher).launch {
+                homeRepository.getListOfMarvelHeroesCharacters(limit, offset).collect {
+                    listOfMarvelHeroesCharacters.value = it
+                }
+            }
+        }
 
         return listOfMarvelHeroesCharacters
     }
 
-    private fun createApiParameter(
-        limit: Int,
-        offset: Int
-    ): HashMap<Any, Any> {
-        val data = HashMap<Any, Any>()
-
-        data[LIMIT] = limit
-        data[OFFSET] = offset
-        return data
-    }
-
-    @ExperimentalCoroutinesApi
-    override suspend fun callCustomAPI(data: HashMap<Any, Any>) {
-
-        val limit = data.getValue(LIMIT) as Int
-        val offset = data.getValue(OFFSET) as Int
-
-        homeRepository.getListOfMarvelHeroesCharacters(limit, offset).collect {
-            listOfMarvelHeroesCharacters.value = it
-        }
-    }
 }

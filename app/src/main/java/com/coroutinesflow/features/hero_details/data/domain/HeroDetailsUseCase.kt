@@ -2,14 +2,12 @@ package com.coroutinesflow.features.hero_details.data.domain
 
 import com.coroutinesflow.base.data.APIState
 import com.coroutinesflow.features.hero_details.data.HeroDetailsRepository
-import com.coroutinesflow.features.hero_details.data.entities.HeroDetailsScreenSections
+import com.coroutinesflow.features.heroes_home.data.entities.MarvelCharacters
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onStart
 
 
 class HeroDetailsUseCase(
@@ -17,34 +15,43 @@ class HeroDetailsUseCase(
     private val iODispatcher: CoroutineDispatcher
 ) {
 
+
     @ExperimentalCoroutinesApi
-    suspend fun getHeroDetailsPageDataComicsSeriesStoriesEvents(characterId: Int) = flow {
-        //call all apis in parallel way
-        val marvelHeroCharacterComicsList =
-            CoroutineScope(iODispatcher).async {
-                heroDetailsRepository.marvelHeroCharacterComicsList(characterId)
-                    .onStart { emit(APIState.LoadingState) }
-            }
-        val marvelHeroCharacterSeriesList =
-            CoroutineScope(iODispatcher).async {
-                heroDetailsRepository.marvelHeroCharacterSeriesList(characterId)
-                    .onStart { emit(APIState.LoadingState) }
-            }
-        val marvelHeroCharacterStoriesList =
-            CoroutineScope(iODispatcher).async {
-                heroDetailsRepository.marvelHeroCharacterStoriesList(characterId)
-                    .onStart { emit(APIState.LoadingState) }
-            }
-        val marvelHeroCharacterEventsList =
-            CoroutineScope(iODispatcher).async {
-                heroDetailsRepository.marvelHeroCharacterEventsList(characterId)
-                    .onStart { emit(APIState.LoadingState) }
-            }
-
-        emit(HeroDetailsScreenSections.COMICS to marvelHeroCharacterComicsList.await())
-        emit(HeroDetailsScreenSections.SERIES to marvelHeroCharacterSeriesList.await())
-        emit(HeroDetailsScreenSections.STORIES to marvelHeroCharacterStoriesList.await())
-        emit(HeroDetailsScreenSections.EVENTS to marvelHeroCharacterEventsList.await())
-
+    suspend fun getHeroDetailsPageDataComics(characterId: Int) = flow {
+        heroDetailsRepository.marvelHeroCharacterComicsList(characterId).collect {
+            emit(convertDataToTargetData(it))
+        }
     }.flowOn(iODispatcher)
+
+
+    @ExperimentalCoroutinesApi
+    suspend fun getHeroDetailsPageDataStories(characterId: Int) = flow {
+        heroDetailsRepository.marvelHeroCharacterStoriesList(characterId).collect {
+            emit(convertDataToTargetData(it))
+        }
+    }.flowOn(iODispatcher)
+
+
+    @ExperimentalCoroutinesApi
+    suspend fun getHeroDetailsPageDataSeries(characterId: Int) = flow {
+        heroDetailsRepository.marvelHeroCharacterSeriesList(characterId).collect {
+            emit(convertDataToTargetData(it))
+        }
+    }.flowOn(iODispatcher)
+
+
+    @ExperimentalCoroutinesApi
+    suspend fun getHeroDetailsPageDataEvents(characterId: Int) = flow {
+        heroDetailsRepository.marvelHeroCharacterEventsList(characterId).collect {
+            emit(convertDataToTargetData(it))
+        }
+    }.flowOn(iODispatcher)
+
+
+    private fun convertDataToTargetData(state: APIState<MarvelCharacters>) =
+        when (state) {
+            is APIState.LoadingState -> state
+            is APIState.ErrorState -> state
+            is APIState.DataStat -> APIState.DataStat(state.value.data.results)
+        }
 }

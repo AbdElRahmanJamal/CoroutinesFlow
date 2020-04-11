@@ -14,19 +14,23 @@ class HeroDetailsRepository(
     @ExperimentalCoroutinesApi
     suspend fun marvelHeroCharacterComicsList(characterId: Int) =
         heroDetailsRemoteDataStore.marvelHeroCharacterComicsList(characterId)
+            .onStart { emit(APIState.LoadingState) }
 
     //Series
     @ExperimentalCoroutinesApi
     suspend fun marvelHeroCharacterSeriesList(characterId: Int) =
         heroDetailsRemoteDataStore.marvelHeroCharacterSeriesList(characterId)
+            .onStart { emit(APIState.LoadingState) }
 
     //Stories
     @ExperimentalCoroutinesApi
     suspend fun marvelHeroCharacterStoriesList(characterId: Int) =
         heroDetailsRemoteDataStore.marvelHeroCharacterStoriesList(characterId)
+            .onStart { emit(APIState.LoadingState) }
 
     //Events
     @ExperimentalCoroutinesApi
     suspend fun marvelHeroCharacterEventsList(characterId: Int) =
         heroDetailsRemoteDataStore.marvelHeroCharacterEventsList(characterId)
+            .onStart { emit(APIState.LoadingState) }
 }

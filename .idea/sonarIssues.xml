@@ -303,6 +303,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/heroes_home/data/di/MarvelHomeHeroesDependencyInjection.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/heroes_home/data/entities/MarvelCharacters.kt">
           <value>
             <set />
@@ -339,6 +344,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/heroes_home/view/HomeViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/coroutinesflow/features/heroes_home/view/HomeViewModelFactory.kt">
           <value>
             <set />
           </value>

@@ -1,55 +1,84 @@
 package com.coroutinesflow.features.hero_details.view
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.coroutinesflow.base.data.APIState
-import com.coroutinesflow.base.view.BaseViewModel
 import com.coroutinesflow.features.hero_details.data.domain.HeroDetailsUseCase
-import com.coroutinesflow.features.hero_details.data.entities.HeroDetailsScreenSections
 import com.coroutinesflow.features.heroes_home.data.entities.Results
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
-const val CHARACTER_ID = "id"
+class HeroDetailsViewModel(
+    private val heroDetailsUseCase: HeroDetailsUseCase
+    , private val mainDispatcher: CoroutineDispatcher
+) : ViewModel() {
 
-class HeroDetailsViewModel(private val heroDetailsUseCase: HeroDetailsUseCase) : BaseViewModel() {
-
-    private val heroDetailsPageDataComicsSeriesStoriesEvents =
-        MutableLiveData<Pair<HeroDetailsScreenSections, APIState<List<Results>>>>()
+    private val heroDetailsPageDataComics = MutableLiveData<APIState<List<Results>>>()
+    private val heroDetailsPageDataSeries = MutableLiveData<APIState<List<Results>>>()
+    private val heroDetailsPageDataStories = MutableLiveData<APIState<List<Results>>>()
+    private val heroDetailsPageDataEvents = MutableLiveData<APIState<List<Results>>>()
 
     @ExperimentalCoroutinesApi
-    override suspend fun callCustomAPI(data: HashMap<Any, Any>) {
+    fun getHeroDetailsPageDataComics(characterId: Int): MutableLiveData<APIState<List<Results>>> {
 
-        val characterId = data.getValue(CHARACTER_ID) as Int
-
-        heroDetailsUseCase.getHeroDetailsPageDataComicsSeriesStoriesEvents(characterId)
-            .collect { pairOfData ->
-                pairOfData.second.collect { apiState ->
-                    when (apiState) {
-                        is APIState.LoadingState ->
-                            heroDetailsPageDataComicsSeriesStoriesEvents.value =
-                                pairOfData.first to apiState
-
-                        is APIState.ErrorState ->
-                            heroDetailsPageDataComicsSeriesStoriesEvents.value =
-                                pairOfData.first to apiState
-
-                        is APIState.DataStat ->
-                            heroDetailsPageDataComicsSeriesStoriesEvents.value =
-                                pairOfData.first to APIState.DataStat(apiState.value.data.results)
+        viewModelScope.launch {
+            CoroutineScope(mainDispatcher).launch {
+                heroDetailsUseCase.getHeroDetailsPageDataComics(characterId)
+                    .collect {
+                        heroDetailsPageDataComics.value = it
                     }
-                }
             }
+        }
+
+        return heroDetailsPageDataComics
+    }
+
+
+    @ExperimentalCoroutinesApi
+    fun getHeroDetailsPageDataStories(characterId: Int): MutableLiveData<APIState<List<Results>>> {
+
+        viewModelScope.launch {
+            CoroutineScope(mainDispatcher).launch {
+                heroDetailsUseCase.getHeroDetailsPageDataStories(characterId)
+                    .collect {
+                        heroDetailsPageDataStories.value = it
+                    }
+            }
+        }
+
+        return heroDetailsPageDataStories
     }
 
     @ExperimentalCoroutinesApi
-    fun getHeroDetailsPageDataComicsSeriesStoriesEvents(id: Int): MutableLiveData<Pair<HeroDetailsScreenSections, APIState<List<Results>>>> {
+    fun getHeroDetailsPageDataSeries(characterId: Int): MutableLiveData<APIState<List<Results>>> {
 
-        val data = HashMap<Any, Any>()
-        data[CHARACTER_ID] = id
+        viewModelScope.launch {
+            CoroutineScope(mainDispatcher).launch {
+                heroDetailsUseCase.getHeroDetailsPageDataSeries(characterId)
+                    .collect {
+                        heroDetailsPageDataSeries.value = it
+                    }
+            }
+        }
+        return heroDetailsPageDataSeries
+    }
 
-        loadData(data)
+    @ExperimentalCoroutinesApi
+    fun getHeroDetailsPageDataEvents(characterId: Int): MutableLiveData<APIState<List<Results>>> {
 
-        return heroDetailsPageDataComicsSeriesStoriesEvents
+        viewModelScope.launch {
+            CoroutineScope(mainDispatcher).launch {
+                heroDetailsUseCase.getHeroDetailsPageDataEvents(characterId)
+                    .collect {
+                        heroDetailsPageDataEvents.value = it
+                    }
+            }
+        }
+        return heroDetailsPageDataEvents
     }
 
 }
