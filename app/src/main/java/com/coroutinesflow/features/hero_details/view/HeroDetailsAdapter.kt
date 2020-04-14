@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.coroutinesflow.R
-import com.coroutinesflow.features.heroes_home.data.entities.Results
+import com.coroutinesflow.base.data.entities.Results
 import com.coroutinesflow.frameworks.downloadImage
 import kotlinx.android.synthetic.main.marvel_hero_details_row_item.view.*
 

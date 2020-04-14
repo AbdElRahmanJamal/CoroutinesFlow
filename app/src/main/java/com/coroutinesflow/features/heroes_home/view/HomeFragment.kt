@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.coroutinesflow.R
@@ -12,13 +11,15 @@ import com.coroutinesflow.base.data.APIState
 import com.coroutinesflow.base.view.BaseScreenFragment
 import com.coroutinesflow.features.heroes_home.data.di.MarvelHomeHeroesDependencyInjection.homeViewModelFactoryObject
 import com.coroutinesflow.features.heroes_home.data.entities.MarvelHeroesUIModel
-import com.coroutinesflow.features.heroes_home.data.entities.Results
+import com.coroutinesflow.base.data.entities.Results
 import com.coroutinesflow.frameworks.network.apiFactory
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.startKoin
 import org.koin.standalone.StandAloneContext.stopKoin
+
+const val HOME = "HOME"
 
 class HomeFragment : BaseScreenFragment() {
 
@@ -39,13 +40,15 @@ class HomeFragment : BaseScreenFragment() {
         initRecView()
         val factory: HomeViewModelFactory = get()
         with(ViewModelProvider(this, factory).get(HomeViewModel::class.java)) {
-            getListOfMarvelHeroesCharacters().observe(viewLifecycleOwner, Observer {
-                when (it) {
-                    is APIState.LoadingState -> setLoadingIndicatorVisibility(View.VISIBLE)
-                    is APIState.DataStat -> showContent(it.value)
-                    is APIState.ErrorState -> showErrorContent(it)
-                }
-            })
+            getListOfMarvelHeroesCharacters(limit = 15, offset = 0, homeID = HOME).observe(
+                viewLifecycleOwner,
+                Observer {
+                    when (it) {
+                        is APIState.LoadingState -> setLoadingIndicatorVisibility(View.VISIBLE)
+                        is APIState.DataStat -> showContent(it.value)
+                        is APIState.ErrorState -> showErrorContent(it)
+                    }
+                })
         }
     }
 
@@ -62,7 +65,7 @@ class HomeFragment : BaseScreenFragment() {
     private fun goToHereDetailsPage(hero: Results) {
         view?.let {
             val goToDetails =
-                HomeFragmentDirections.actionHomeFragmentToHeroDetailsFragment2(hero)
+                HomeFragmentDirections.actionHomeFragmentToHeroDetailsFragment(hero)
             Navigation.findNavController(it).navigate(goToDetails)
         }
     }

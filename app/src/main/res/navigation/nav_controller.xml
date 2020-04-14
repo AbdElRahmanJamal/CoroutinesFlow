@@ -10,7 +10,7 @@
         android:name="com.coroutinesflow.features.heroes_home.view.HomeFragment"
         tools:layout="@layout/home_fragment" >
         <action
-            android:id="@+id/action_homeFragment_to_heroDetailsFragment2"
+            android:id="@+id/action_homeFragment_to_heroDetailsFragment"
             app:destination="@id/heroDetailsFragment" />
     </fragment>
     <fragment
@@ -19,7 +19,7 @@
         android:label="hero_details_fragment"
         tools:layout="@layout/hero_details_fragment" >
         <argument
-            android:name="marvelHeroItem"
-            app:argType="com.coroutinesflow.features.heroes_home.data.entities.Results" />
+            android:name="marvelHero"
+            app:argType="com.coroutinesflow.base.data.entities.Results" />
     </fragment>
 </navigation>

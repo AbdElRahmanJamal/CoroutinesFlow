@@ -1,6 +1,7 @@
 package com.coroutinesflow.features.heroes_home.data
 
 import com.coroutinesflow.base.data.APIState
+import com.coroutinesflow.features.heroes_home.data.entities.MarvelHomeTable
 import com.coroutinesflow.features.heroes_home.data.local_datastore.MarvelHomeLocalDataStore
 import com.coroutinesflow.features.heroes_home.data.remote_datastore.MarvelHomeRemoteDataStore
 import kotlinx.coroutines.CoroutineDispatcher
@@ -17,10 +18,13 @@ class MarvelHomeRepository(
 ) {
 
     @ExperimentalCoroutinesApi
-    suspend fun getListOfMarvelHeroesCharacters(limit: Int = 10, offset: Int = 0) = flow {
-        marvelHomeLocalDataStore.getListOfMarvelHeroesCharacters(limit, offset).collect {
-            if (it.isNotEmpty()) {
-                emit(APIState.DataStat(it))
+    suspend fun getListOfMarvelHeroesCharacters(limit: Int = 10, offset: Int = 0, homeID: String) =
+        flow {
+            val listOfMarvelHeroesCharactersLocal: MarvelHomeTable =
+                marvelHomeLocalDataStore.getListOfMarvelHeroesCharacters(limit, offset, homeID)
+
+            if (listOfMarvelHeroesCharactersLocal != null && !listOfMarvelHeroesCharactersLocal.listOfHeroes.isNullOrEmpty()) {
+                emit(APIState.DataStat(listOfMarvelHeroesCharactersLocal.listOfHeroes))
             } else {
                 marvelHomeRemoteDataStore.getListOfMarvelHeroesCharacters(limit, offset)
                     .collect { states ->
@@ -29,12 +33,13 @@ class MarvelHomeRepository(
                             is APIState.ErrorState -> emit(APIState.ErrorState(states.exception))
                             is APIState.DataStat -> {
                                 emit(APIState.DataStat(states.value.data.results))
-                                marvelHomeLocalDataStore.updateInsert(states.value.data.results)
+                                marvelHomeLocalDataStore.updateInsertMarvelHeroesCharacters(
+                                    MarvelHomeTable(homeID, states.value.data.results)
+                                )
                             }
                         }
                     }
             }
-        }
-    }.onStart { emit(APIState.LoadingState) }.flowOn(iODispatcher)
+        }.onStart { emit(APIState.LoadingState) }.flowOn(iODispatcher)
 
 }

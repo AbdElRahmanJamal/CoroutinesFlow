@@ -1,4 +1,4 @@
-package com.coroutinesflow.features.heroes_home.data.entities
+package com.coroutinesflow.base.data.entities
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

@@ -14,10 +14,11 @@ class HomeViewModel(
 
     @ExperimentalCoroutinesApi
     fun getListOfMarvelHeroesCharacters(
-        limit: Int = 10,
-        offset: Int = 0
+        limit: Int,
+        offset: Int,
+        homeID: String
     ) = liveData(mainDispatcher) {
-        homeRepository.getListOfMarvelHeroesCharacters(limit, offset).collect {
+        homeRepository.getListOfMarvelHeroesCharacters(limit, offset, homeID).collect {
             emit(it)
         }
     }

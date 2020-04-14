@@ -1,14 +1,14 @@
-package com.coroutinesflow.features.heroes_home.data.entities
+package com.coroutinesflow.base.data.entities
 
 import android.os.Parcelable
 import androidx.room.*
-import com.coroutinesflow.features.heroes_home.data.local_datastore.db.URlsDataConverter
+import com.coroutinesflow.frameworks.db.URlsDataConverter
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 
 @Parcelize
-@Entity(tableName = "marvel_character_list")
+
 data class Results(
     @PrimaryKey(autoGenerate = false)
     @SerializedName("id") val id: Int,

@@ -1,11 +1,36 @@
-package com.coroutinesflow.features.heroes_home.data.local_datastore.db
+package com.coroutinesflow.frameworks.db
 
 import androidx.room.TypeConverter
-import com.coroutinesflow.features.heroes_home.data.entities.Items
-import com.coroutinesflow.features.heroes_home.data.entities.Urls
+import com.coroutinesflow.base.data.entities.Items
+import com.coroutinesflow.base.data.entities.Results
+import com.coroutinesflow.base.data.entities.Urls
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.*
+
+
+class ResultsDataConverter {
+    var gson = Gson()
+
+    @TypeConverter
+    fun stringToSomeObjectList(data: String?): List<Results> {
+        if (data == null) {
+            return emptyList()
+        }
+
+        val listType = object : TypeToken<List<Results>>() {
+
+        }.type
+
+        return gson.fromJson(data, listType)
+    }
+
+    @TypeConverter
+    fun someObjectListToString(someObjects: List<Results>): String {
+        return gson.toJson(someObjects)
+    }
+}
+
 
 class ItemsDataConverter {
     var gson = Gson()

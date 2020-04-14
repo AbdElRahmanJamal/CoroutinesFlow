@@ -9,7 +9,7 @@ import com.coroutinesflow.R
 import com.coroutinesflow.base.data.APIState
 import com.coroutinesflow.base.view.BaseScreenFragment
 import com.coroutinesflow.features.hero_details.data.di.MarvelHeroDetailsDependencyInjection.heroDetailsViewModelFactoryObject
-import com.coroutinesflow.features.heroes_home.data.entities.Results
+import com.coroutinesflow.base.data.entities.Results
 import com.coroutinesflow.frameworks.network.apiFactory
 import kotlinx.android.synthetic.main.hero_details_fragment.*
 import kotlinx.android.synthetic.main.marvel_page_details_section.view.*
@@ -45,7 +45,7 @@ class HeroDetailsFragment : BaseScreenFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         arguments?.let { bundle ->
-            heroModel = HeroDetailsFragmentArgs.fromBundle(bundle).marvelHeroItem
+            heroModel = HeroDetailsFragmentArgs.fromBundle(bundle).marvelHero
 
             showScreenContent()
             initComicsRecView()

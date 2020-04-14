@@ -3,7 +3,7 @@ package com.coroutinesflow.features.hero_details.data.domain
 import com.coroutinesflow.base.data.APIState
 import com.coroutinesflow.features.hero_details.data.HeroDetailsRepository
 import com.coroutinesflow.features.hero_details.data.entities.HeroDetailsPageUIModel
-import com.coroutinesflow.features.heroes_home.data.entities.MarvelCharacters
+import com.coroutinesflow.base.data.entities.MarvelCharacters
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 

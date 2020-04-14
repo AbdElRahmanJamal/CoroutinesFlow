@@ -2,7 +2,7 @@ package com.coroutinesflow.features.heroes_home.data.di
 
 import com.coroutinesflow.features.heroes_home.data.MarvelHomeRepository
 import com.coroutinesflow.features.heroes_home.data.local_datastore.MarvelHomeLocalDataStore
-import com.coroutinesflow.features.heroes_home.data.local_datastore.db.MarvelCharactersDB
+import com.coroutinesflow.frameworks.db.MarvelCharactersDB
 import com.coroutinesflow.features.heroes_home.data.remote_datastore.MarvelHomeRemoteDataStore
 import com.coroutinesflow.features.heroes_home.view.HomeViewModelFactory
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +17,10 @@ object MarvelHomeHeroesDependencyInjection {
         factory { HomeViewModelFactory(get(), Dispatchers.Main) }
         factory { MarvelHomeRepository(get(), get(), Dispatchers.IO) }
         factory { MarvelHomeRemoteDataStore(get(), Dispatchers.IO ) }
-        factory { MarvelHomeLocalDataStore(MarvelCharactersDB(androidApplication()).marvelCharactersDao()) }
+        factory { MarvelHomeLocalDataStore(
+            MarvelCharactersDB(
+                androidApplication()
+            ).marvelCharactersDao()) }
     }
 
 }

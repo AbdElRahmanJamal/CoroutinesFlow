@@ -1,7 +1,7 @@
 package com.coroutinesflow.features.hero_details.data.entities
 
 import com.coroutinesflow.base.data.APIState
-import com.coroutinesflow.features.heroes_home.data.entities.Results
+import com.coroutinesflow.base.data.entities.Results
 
 class HeroDetailsPageUIModel(
     val loadingState: APIState.LoadingState?,
