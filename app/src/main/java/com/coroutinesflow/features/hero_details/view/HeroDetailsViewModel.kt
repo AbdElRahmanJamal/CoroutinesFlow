@@ -13,35 +13,39 @@ class HeroDetailsViewModel(
 ) : ViewModel() {
 
     @ExperimentalCoroutinesApi
-    fun getHeroDetailsPageDataComics(characterId: Int) = liveData(mainDispatcher) {
-        heroDetailsUseCase.getHeroDetailsPageDataComics(characterId)
-            .collect {
-                emit(it)
-            }
-    }
+    fun getHeroDetailsPageDataComics(sectionID: String, characterId: Int) =
+        liveData(mainDispatcher) {
+            heroDetailsUseCase.getHeroDetailsPageDataComics(sectionID, characterId)
+                .collect {
+                    emit(it)
+                }
+        }
 
     @ExperimentalCoroutinesApi
-    fun getHeroDetailsPageDataStories(characterId: Int) = liveData(mainDispatcher) {
-        heroDetailsUseCase.getHeroDetailsPageDataStories(characterId)
-            .collect {
-                emit(it)
-            }
-    }
+    fun getHeroDetailsPageDataStories(sectionID: String, characterId: Int) =
+        liveData(mainDispatcher) {
+            heroDetailsUseCase.getHeroDetailsPageDataStories(sectionID, characterId)
+                .collect {
+                    emit(it)
+                }
+        }
 
     @ExperimentalCoroutinesApi
-    fun getHeroDetailsPageDataSeries(characterId: Int) = liveData(mainDispatcher) {
-        heroDetailsUseCase.getHeroDetailsPageDataSeries(characterId)
-            .collect {
-                emit(it)
-            }
-    }
+    fun getHeroDetailsPageDataSeries(sectionID: String, characterId: Int) =
+        liveData(mainDispatcher) {
+            heroDetailsUseCase.getHeroDetailsPageDataSeries(sectionID, characterId)
+                .collect {
+                    emit(it)
+                }
+        }
 
     @ExperimentalCoroutinesApi
-    fun getHeroDetailsPageDataEvents(characterId: Int) = liveData(mainDispatcher) {
-        heroDetailsUseCase.getHeroDetailsPageDataEvents(characterId)
-            .collect {
-                emit(it)
-            }
-    }
+    fun getHeroDetailsPageDataEvents(sectionID: String, characterId: Int) =
+        liveData(mainDispatcher) {
+            heroDetailsUseCase.getHeroDetailsPageDataEvents(sectionID, characterId)
+                .collect {
+                    emit(it)
+                }
+        }
 
 }
