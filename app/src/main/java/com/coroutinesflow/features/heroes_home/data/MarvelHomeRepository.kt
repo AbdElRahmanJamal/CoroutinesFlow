@@ -30,7 +30,7 @@ class MarvelHomeRepository(
                     .collect { states ->
                         when (states) {
                             is APIState.LoadingState -> emit(APIState.LoadingState)
-                            is APIState.ErrorState -> emit(APIState.ErrorState(states.exception))
+                            is APIState.ErrorState -> emit(APIState.ErrorState(states.throwable))
                             is APIState.DataStat -> {
                                 emit(APIState.DataStat(states.value.data.results))
                                 marvelHomeLocalDataStore.updateInsertMarvelHeroesCharacters(

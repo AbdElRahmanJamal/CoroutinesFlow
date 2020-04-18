@@ -110,7 +110,7 @@ class HeroDetailsRepository(
     private fun emitUIModel(state: APIState<MarvelCharacters>) =
         when (state) {
             is APIState.LoadingState -> APIState.LoadingState
-            is APIState.ErrorState -> APIState.ErrorState(state.exception)
+            is APIState.ErrorState -> APIState.ErrorState(state.throwable)
             is APIState.DataStat -> {
                 APIState.DataStat(state.value.data.results)
             }

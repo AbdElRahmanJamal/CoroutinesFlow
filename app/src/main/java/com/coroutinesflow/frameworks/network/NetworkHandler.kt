@@ -4,7 +4,10 @@ import com.coroutinesflow.AppExceptions
 import com.coroutinesflow.base.data.APIState
 import com.coroutinesflow.base.data.BaseModel
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import retrofit2.Response
 
 const val TIME_OUT_IN_MILLIS_SECOND = 10000L
@@ -17,6 +20,9 @@ suspend fun <RESPONSE : BaseModel<RESPONSE>> getRemoteDate(
 
 class NetworkHandler<RESPONSE : Any> {
 
+    private lateinit var state: APIState<RESPONSE>
+    private lateinit var response: Response<RESPONSE>
+
     @ExperimentalCoroutinesApi
     suspend fun getRemoteDataAPI(
         function: suspend NetworkHandler<RESPONSE>.() -> Response<RESPONSE>,
@@ -24,17 +30,22 @@ class NetworkHandler<RESPONSE : Any> {
     ): Flow<APIState<RESPONSE>> =
         flow {
             runCatching {
-                withTimeout(TIME_OUT_IN_MILLIS_SECOND) {
-                    withContext(iODispatcher) {
-                        function.invoke(this@NetworkHandler)
+                CoroutineScope(iODispatcher).launch {
+                    withTimeout(TIME_OUT_IN_MILLIS_SECOND) {
+                        withContext(iODispatcher) {
+                            response = function.invoke(this@NetworkHandler)
+                        }
                     }
                 }
-            }.onSuccess {
-                if (it.isSuccessful && it.body() is RESPONSE) {
-                    emit(getDataOrThrowException(it))
-                } else {
-                    emit(throwException(it))
+            }.onSuccess { job: Job ->
+                job.join()
+                job.invokeOnCompletion {
+                    state = it?.let { notNullThrowable ->
+                        APIState.ErrorState(notNullThrowable)
+                    } ?: getDataOrThrowException(response)
                 }
+                emit(state)
+
             }.onFailure {
                 emit(APIState.ErrorState(it))
             }
@@ -42,16 +53,6 @@ class NetworkHandler<RESPONSE : Any> {
             emit(APIState.ErrorState(AppExceptions.GenericErrorException))
         }.flowOn(iODispatcher)
 
-
-    private fun throwException(it: Response<RESPONSE>): APIState<RESPONSE> {
-        return it.errorBody()?.let { responseBody ->
-            if (responseBody.toString().isEmpty()) {
-                APIState.ErrorState(AppExceptions.HttpException)
-            } else {
-                APIState.ErrorState(AppExceptions.GenericErrorException)
-            }
-        } ?: APIState.ErrorState(AppExceptions.GenericErrorException)
-    }
 
     private fun getDataOrThrowException(it: Response<RESPONSE>): APIState<RESPONSE> {
 
