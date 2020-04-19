@@ -2,6 +2,7 @@ package com.coroutinesflow.features.heroes_home.data.remote_datastore
 
 import com.coroutinesflow.base.data.APIs
 import com.coroutinesflow.base.data.entities.MarvelCharacters
+import com.coroutinesflow.frameworks.network.cancelJob
 import com.coroutinesflow.frameworks.network.getRemoteDate
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -12,8 +13,11 @@ class MarvelHomeRemoteDataStore(
 ) {
 
     @ExperimentalCoroutinesApi
-    suspend fun getListOfMarvelHeroesCharacters(limit: Int = 10, offset: Int = 0) =
-        getRemoteDate<MarvelCharacters>(iODispatcher) {
+    suspend fun getListOfMarvelHeroesCharacters(apiID: String, limit: Int = 10, offset: Int = 0) =
+        getRemoteDate<MarvelCharacters>(apiID, iODispatcher) {
             aPIs.getMarvelCharactersSuspend(limit, offset)
         }
+
+    fun cancelAPICall(apiID: String) = cancelJob(apiID)
+
 }

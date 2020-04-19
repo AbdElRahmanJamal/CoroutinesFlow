@@ -13,39 +13,43 @@ class HeroDetailsViewModel(
 ) : ViewModel() {
 
     @ExperimentalCoroutinesApi
-    fun getHeroDetailsPageDataComics(sectionID: String, characterId: Int) =
+    fun getHeroDetailsPageDataComics(apiID: String, sectionID: String, characterId: Int) =
         liveData(mainDispatcher) {
-            heroDetailsUseCase.getHeroDetailsPageDataComics(sectionID, characterId)
+            heroDetailsUseCase.getHeroDetailsPageDataComics(apiID, sectionID, characterId)
                 .collect {
                     emit(it)
                 }
         }
 
     @ExperimentalCoroutinesApi
-    fun getHeroDetailsPageDataStories(sectionID: String, characterId: Int) =
+    fun getHeroDetailsPageDataStories(apiID: String, sectionID: String, characterId: Int) =
         liveData(mainDispatcher) {
-            heroDetailsUseCase.getHeroDetailsPageDataStories(sectionID, characterId)
+            heroDetailsUseCase.getHeroDetailsPageDataStories(apiID, sectionID, characterId)
                 .collect {
                     emit(it)
                 }
         }
 
     @ExperimentalCoroutinesApi
-    fun getHeroDetailsPageDataSeries(sectionID: String, characterId: Int) =
+    fun getHeroDetailsPageDataSeries(apiID: String, sectionID: String, characterId: Int) =
         liveData(mainDispatcher) {
-            heroDetailsUseCase.getHeroDetailsPageDataSeries(sectionID, characterId)
+            heroDetailsUseCase.getHeroDetailsPageDataSeries(apiID, sectionID, characterId)
                 .collect {
                     emit(it)
                 }
         }
 
     @ExperimentalCoroutinesApi
-    fun getHeroDetailsPageDataEvents(sectionID: String, characterId: Int) =
+    fun getHeroDetailsPageDataEvents(apiID: String, sectionID: String, characterId: Int) =
         liveData(mainDispatcher) {
-            heroDetailsUseCase.getHeroDetailsPageDataEvents(sectionID, characterId)
+            heroDetailsUseCase.getHeroDetailsPageDataEvents(apiID, sectionID, characterId)
                 .collect {
                     emit(it)
                 }
         }
 
+    //here to cancel job "API call"
+    fun cancelAPICall(apiID: String) = liveData {
+        emit(heroDetailsUseCase.cancelAPICall(apiID))
+    }
 }

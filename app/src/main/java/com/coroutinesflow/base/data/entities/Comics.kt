@@ -10,6 +10,6 @@ import kotlinx.android.parcel.Parcelize
 data class Comics(
     @SerializedName("available") val available: Int,
     @SerializedName("collectionURI") val collectionURI: String?,
-    @TypeConverters(ItemsDataConverter::class)@SerializedName("items") val items: List<Items>?,
+    @TypeConverters(ItemsDataConverter::class) @SerializedName("items") val items: List<Items>?,
     @SerializedName("returned") val returned: Int
 ) : Parcelable

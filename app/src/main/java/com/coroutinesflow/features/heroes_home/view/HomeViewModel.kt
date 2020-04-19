@@ -14,12 +14,18 @@ class HomeViewModel(
 
     @ExperimentalCoroutinesApi
     fun getListOfMarvelHeroesCharacters(
+        apiID: String,
         limit: Int,
         offset: Int,
         homeID: String
     ) = liveData(mainDispatcher) {
-        homeRepository.getListOfMarvelHeroesCharacters(limit, offset, homeID).collect {
+        homeRepository.getListOfMarvelHeroesCharacters(apiID, limit, offset, homeID).collect {
             emit(it)
         }
+    }
+
+    //here to cancel job "API call"
+    fun cancelAPICall(apiID: String) = liveData {
+        emit(homeRepository.cancelAPICall(apiID))
     }
 }

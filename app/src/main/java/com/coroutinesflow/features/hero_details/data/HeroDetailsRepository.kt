@@ -15,7 +15,7 @@ class HeroDetailsRepository(
 ) {
     //Comics
     @ExperimentalCoroutinesApi
-    suspend fun marvelHeroCharacterComicsList(sectionID: String, characterId: Int) =
+    suspend fun marvelHeroCharacterComicsList(apiID: String, sectionID: String, characterId: Int) =
         flow {
 
             val marvelDetailsSection: MarvelHeroDetailsTable =
@@ -24,7 +24,7 @@ class HeroDetailsRepository(
             if (marvelDetailsSection != null && !marvelDetailsSection.heroSectionList.isNullOrEmpty()) {
                 emit(APIState.DataStat(marvelDetailsSection.heroSectionList))
             } else {
-                heroDetailsRemoteDataStore.marvelHeroCharacterComicsList(characterId)
+                heroDetailsRemoteDataStore.marvelHeroCharacterComicsList(apiID, characterId)
                     .collect { state ->
                         emit(emitUIModel(state))
                         handleOnStateChange(state, sectionID, characterId)
@@ -34,7 +34,7 @@ class HeroDetailsRepository(
 
     //Series
     @ExperimentalCoroutinesApi
-    suspend fun marvelHeroCharacterSeriesList(sectionID: String, characterId: Int) =
+    suspend fun marvelHeroCharacterSeriesList(apiID: String, sectionID: String, characterId: Int) =
         flow {
 
             val marvelDetailsSection: MarvelHeroDetailsTable =
@@ -43,7 +43,7 @@ class HeroDetailsRepository(
             if (marvelDetailsSection != null && !marvelDetailsSection.heroSectionList.isNullOrEmpty()) {
                 emit(APIState.DataStat(marvelDetailsSection.heroSectionList))
             } else {
-                heroDetailsRemoteDataStore.marvelHeroCharacterSeriesList(characterId)
+                heroDetailsRemoteDataStore.marvelHeroCharacterSeriesList(apiID, characterId)
                     .collect { state ->
                         emit(emitUIModel(state))
                         handleOnStateChange(state, sectionID, characterId)
@@ -54,7 +54,7 @@ class HeroDetailsRepository(
 
     //Stories
     @ExperimentalCoroutinesApi
-    suspend fun marvelHeroCharacterStoriesList(sectionID: String, characterId: Int) =
+    suspend fun marvelHeroCharacterStoriesList(apiID: String, sectionID: String, characterId: Int) =
         flow {
 
             val marvelDetailsSection: MarvelHeroDetailsTable =
@@ -63,7 +63,7 @@ class HeroDetailsRepository(
             if (marvelDetailsSection != null && !marvelDetailsSection.heroSectionList.isNullOrEmpty()) {
                 emit(APIState.DataStat(marvelDetailsSection.heroSectionList))
             } else {
-                heroDetailsRemoteDataStore.marvelHeroCharacterStoriesList(characterId)
+                heroDetailsRemoteDataStore.marvelHeroCharacterStoriesList(apiID, characterId)
                     .collect { state ->
                         emit(emitUIModel(state))
                         handleOnStateChange(state, sectionID, characterId)
@@ -73,7 +73,7 @@ class HeroDetailsRepository(
 
     //Events
     @ExperimentalCoroutinesApi
-    suspend fun marvelHeroCharacterEventsList(sectionID: String, characterId: Int) =
+    suspend fun marvelHeroCharacterEventsList(apiID: String, sectionID: String, characterId: Int) =
         flow {
 
             val marvelDetailsSection: MarvelHeroDetailsTable =
@@ -82,13 +82,16 @@ class HeroDetailsRepository(
             if (marvelDetailsSection != null && !marvelDetailsSection.heroSectionList.isNullOrEmpty()) {
                 emit(APIState.DataStat(marvelDetailsSection.heroSectionList))
             } else {
-                heroDetailsRemoteDataStore.marvelHeroCharacterEventsList(characterId)
+                heroDetailsRemoteDataStore.marvelHeroCharacterEventsList(apiID, characterId)
                     .collect { state ->
                         emit(emitUIModel(state))
                         handleOnStateChange(state, sectionID, characterId)
                     }
             }
         }
+
+    fun cancelAPICall(apiID: String) = heroDetailsRemoteDataStore.cancelAPICall(apiID)
+
 
     private suspend fun handleOnStateChange(
         state: APIState<MarvelCharacters>,

@@ -5,7 +5,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.coroutinesflow.R
+import com.coroutinesflow.*
 import com.coroutinesflow.base.data.APIState
 import com.coroutinesflow.base.data.entities.Results
 import com.coroutinesflow.base.view.BaseScreenFragment
@@ -16,12 +16,12 @@ import kotlinx.android.synthetic.main.marvel_page_details_section.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.startKoin
-import org.koin.standalone.StandAloneContext.stopKoin
 
 const val COMICS = "Comics"
 const val SERIES = "Series"
 const val STORIES = "Stories"
 const val EVENTS = "Events"
+
 
 class HeroDetailsFragment : BaseScreenFragment() {
 
@@ -38,8 +38,6 @@ class HeroDetailsFragment : BaseScreenFragment() {
     override fun startKoinDependancyInjection() = startKoin(
         context!!.applicationContext, listOf(apiFactory, heroDetailsViewModelFactoryObject)
     )
-
-    override fun stopKoinDependancyInjection() = stopKoin()
 
     @ExperimentalCoroutinesApi
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -58,28 +56,28 @@ class HeroDetailsFragment : BaseScreenFragment() {
             with(ViewModelProvider(this, factory).get(HeroDetailsViewModel::class.java)) {
 
 
-                getHeroDetailsPageDataComics(COMICS, heroModel.id)
+                getHeroDetailsPageDataComics(COMICS_API, COMICS, heroModel.id)
                     .observe(viewLifecycleOwner, Observer {
                         comics.section_title.text = COMICS
-                        handleSectionStates(it, comics)
+                        handleSectionStates(COMICS_API, it, comics)
                     })
 
-                getHeroDetailsPageDataSeries(SERIES, heroModel.id)
+                getHeroDetailsPageDataSeries(SERIES_API, SERIES, heroModel.id)
                     .observe(viewLifecycleOwner, Observer {
                         series.section_title.text = SERIES
-                        handleSectionStates(it, series)
+                        handleSectionStates(SERIES_API, it, series)
                     })
 
-                getHeroDetailsPageDataStories(STORIES, heroModel.id)
+                getHeroDetailsPageDataStories(STORIES_API, STORIES, heroModel.id)
                     .observe(viewLifecycleOwner, Observer {
                         stories.section_title.text = STORIES
-                        handleSectionStates(it, stories)
+                        handleSectionStates(STORIES_API, it, stories)
                     })
 
-                getHeroDetailsPageDataEvents(EVENTS, heroModel.id)
+                getHeroDetailsPageDataEvents(EVENTS_API, EVENTS, heroModel.id)
                     .observe(viewLifecycleOwner, Observer {
                         events.section_title.text = EVENTS
-                        handleSectionStates(it, events)
+                        handleSectionStates(EVENTS_API, it, events)
                     })
 
             }
@@ -131,6 +129,7 @@ class HeroDetailsFragment : BaseScreenFragment() {
     }
 
     private fun handleSectionStates(
+        apiID: String,
         state: APIState<List<Results>>,
         view: View
     ) {

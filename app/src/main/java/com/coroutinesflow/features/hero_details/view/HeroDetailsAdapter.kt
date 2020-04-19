@@ -1,6 +1,7 @@
 package com.coroutinesflow.features.hero_details.view
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,11 +17,13 @@ class HeroDetailsAdapter :
     RecyclerView.Adapter<HeroDetailsAdapter.MarvelHeroCharacterViewHolder>() {
 
     private var marvelCharacterSectionList: MutableList<Results> = mutableListOf()
+    private lateinit var context: Context
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): MarvelHeroCharacterViewHolder {
+        context = parent.context
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.marvel_hero_details_row_item, parent, false)
         return MarvelHeroCharacterViewHolder(view)
@@ -32,7 +35,7 @@ class HeroDetailsAdapter :
         marvelCharacter.thumbnail?.let {
             val imageURL =
                 marvelCharacter.thumbnail.path + "." + marvelCharacter.thumbnail.extension
-            downloadImage(imageURL, holder.charactersImage)
+            downloadImage(context, imageURL, holder.charactersImage)
             holder.charactersName.text = marvelCharacter.name ?: marvelCharacter.title
         }
     }

@@ -1,8 +1,7 @@
 package com.coroutinesflow.features.heroes_home.data.local_datastore
 
-import com.coroutinesflow.features.heroes_home.data.local_datastore.db.MarvelCharactersDao
-import com.coroutinesflow.base.data.entities.Results
 import com.coroutinesflow.features.heroes_home.data.entities.MarvelHomeTable
+import com.coroutinesflow.features.heroes_home.data.local_datastore.db.MarvelCharactersDao
 
 class MarvelHomeLocalDataStore(private val marvelCharactersDao: MarvelCharactersDao) {
 

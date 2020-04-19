@@ -10,8 +10,7 @@ import com.coroutinesflow.R
 import com.coroutinesflow.base.data.APIState
 import kotlinx.android.synthetic.main.fragment_base_screen.*
 import kotlinx.android.synthetic.main.fragment_base_screen.view.*
-import org.koin.android.ext.android.getKoin
-import org.koin.core.Koin
+import org.koin.standalone.StandAloneContext
 
 /**
  * A simple [Fragment] subclass.
@@ -38,7 +37,7 @@ abstract class BaseScreenFragment : Fragment() {
     protected abstract fun getLayoutId(): Int
     protected abstract fun getScreenTitle(): String
     protected abstract fun startKoinDependancyInjection()
-    protected abstract fun stopKoinDependancyInjection()
+    private fun stopKoinDependancyInjection() = StandAloneContext.stopKoin()
 
     protected fun setLoadingIndicatorVisibility(visibility: Int) {
         lottie_loading?.apply {

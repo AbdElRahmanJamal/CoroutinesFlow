@@ -5,14 +5,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.coroutinesflow.base.data.entities.Results
 import com.coroutinesflow.features.hero_details.data.entities.MarvelHeroDetailsTable
 import com.coroutinesflow.features.hero_details.data.local_datastore.MarvelHeroDerailsDao
 import com.coroutinesflow.features.heroes_home.data.entities.MarvelHomeTable
 import com.coroutinesflow.features.heroes_home.data.local_datastore.db.MarvelCharactersDao
 
 @Database(
-    entities = [MarvelHomeTable::class,MarvelHeroDetailsTable::class],
+    entities = [MarvelHomeTable::class, MarvelHeroDetailsTable::class],
     version = 1
 )
 @TypeConverters(

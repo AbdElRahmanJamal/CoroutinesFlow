@@ -18,7 +18,12 @@ class MarvelHomeRepository(
 ) {
 
     @ExperimentalCoroutinesApi
-    suspend fun getListOfMarvelHeroesCharacters(limit: Int = 10, offset: Int = 0, homeID: String) =
+    suspend fun getListOfMarvelHeroesCharacters(
+        apiID: String,
+        limit: Int = 10,
+        offset: Int = 0,
+        homeID: String
+    ) =
         flow {
             val listOfMarvelHeroesCharactersLocal: MarvelHomeTable =
                 marvelHomeLocalDataStore.getListOfMarvelHeroesCharacters(limit, offset, homeID)
@@ -26,7 +31,7 @@ class MarvelHomeRepository(
             if (listOfMarvelHeroesCharactersLocal != null && !listOfMarvelHeroesCharactersLocal.listOfHeroes.isNullOrEmpty()) {
                 emit(APIState.DataStat(listOfMarvelHeroesCharactersLocal.listOfHeroes))
             } else {
-                marvelHomeRemoteDataStore.getListOfMarvelHeroesCharacters(limit, offset)
+                marvelHomeRemoteDataStore.getListOfMarvelHeroesCharacters(apiID, limit, offset)
                     .collect { states ->
                         when (states) {
                             is APIState.LoadingState -> emit(APIState.LoadingState)
@@ -41,5 +46,7 @@ class MarvelHomeRepository(
                     }
             }
         }.onStart { emit(APIState.LoadingState) }.flowOn(iODispatcher)
+
+    fun cancelAPICall(apiID: String) = marvelHomeRemoteDataStore.cancelAPICall(apiID)
 
 }

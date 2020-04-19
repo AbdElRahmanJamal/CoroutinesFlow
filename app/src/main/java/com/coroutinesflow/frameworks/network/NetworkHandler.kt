@@ -13,10 +13,19 @@ import retrofit2.Response
 const val TIME_OUT_IN_MILLIS_SECOND = 10000L
 @ExperimentalCoroutinesApi
 suspend fun <RESPONSE : BaseModel<RESPONSE>> getRemoteDate(
+    apiID: String,
     iODispatcher: CoroutineDispatcher,
     function: suspend NetworkHandler<RESPONSE>. () -> Response<RESPONSE>
-): Flow<APIState<RESPONSE>> = NetworkHandler<RESPONSE>().getRemoteDataAPI(function, iODispatcher)
+): Flow<APIState<RESPONSE>> =
+    NetworkHandler<RESPONSE>().getRemoteDataAPI(apiID, function, iODispatcher)
 
+val apisJobsHashMap = HashMap<String, Job>()
+
+fun cancelJob(apiID: String): Boolean {
+    if (apisJobsHashMap.size > 0 && apisJobsHashMap.containsKey(apiID))
+        apisJobsHashMap.getValue(apiID).cancel()
+    return apisJobsHashMap.getValue(apiID).isCancelled
+}
 
 class NetworkHandler<RESPONSE : Any> {
 
@@ -25,6 +34,7 @@ class NetworkHandler<RESPONSE : Any> {
 
     @ExperimentalCoroutinesApi
     suspend fun getRemoteDataAPI(
+        apiID: String,
         function: suspend NetworkHandler<RESPONSE>.() -> Response<RESPONSE>,
         iODispatcher: CoroutineDispatcher
     ): Flow<APIState<RESPONSE>> =
@@ -38,6 +48,7 @@ class NetworkHandler<RESPONSE : Any> {
                     }
                 }
             }.onSuccess { job: Job ->
+                apisJobsHashMap[apiID] = job
                 job.join()
                 job.invokeOnCompletion {
                     state = it?.let { notNullThrowable ->
@@ -54,14 +65,13 @@ class NetworkHandler<RESPONSE : Any> {
         }.flowOn(iODispatcher)
 
 
-    private fun getDataOrThrowException(it: Response<RESPONSE>): APIState<RESPONSE> {
-
-        return it.body()?.let {
+    private fun getDataOrThrowException(it: Response<RESPONSE>) =
+        it.body()?.let {
             if (it.toString().isEmpty()) {
                 APIState.ErrorState(AppExceptions.HttpException)
             } else {
                 APIState.DataStat(it)
             }
         } ?: APIState.ErrorState(AppExceptions.HttpException)
-    }
 }
+

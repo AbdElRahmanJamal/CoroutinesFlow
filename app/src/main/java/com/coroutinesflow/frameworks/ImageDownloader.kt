@@ -1,17 +1,15 @@
 package com.coroutinesflow.frameworks
 
+import android.content.Context
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.coroutinesflow.R
-import com.squareup.picasso.Picasso
 
-fun downloadImage(url: String, imageView: ImageView) {
+fun downloadImage(context: Context, url: String, imageView: ImageView) {
 
-    val get = Picasso
-        .get()
-    get.setIndicatorsEnabled(true)
-    get.load(url)
+    Glide.with(context).load(url).placeholder(R.drawable.ic_the_avengers)
         .error(R.drawable.ic_marvel_logo)
-        .fit()
-        .placeholder(R.drawable.ic_the_avengers)
+        .fitCenter()
         .into(imageView)
+
 }

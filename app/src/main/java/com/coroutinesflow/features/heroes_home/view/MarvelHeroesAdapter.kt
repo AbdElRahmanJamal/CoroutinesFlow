@@ -1,6 +1,7 @@
 package com.coroutinesflow.features.heroes_home.view
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,9 +17,10 @@ class MarvelHeroesAdapter :
     RecyclerView.Adapter<MarvelHeroesAdapter.MarvelCharactersViewHolder>() {
 
     private var marvelHeroesUIModel: MarvelHeroesUIModel = MarvelHeroesUIModel(mutableListOf())
-
+    private lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MarvelCharactersViewHolder {
+        context = parent.context
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.marvel_hero_item, parent, false)
         return MarvelCharactersViewHolder(view)
@@ -31,7 +33,7 @@ class MarvelHeroesAdapter :
             val imageURL =
                 marvelCharacter.thumbnail.path + "." + marvelCharacter.thumbnail.extension
             imageURL.replace("http", "https")
-            downloadImage(imageURL, holder.charactersImage)
+            downloadImage(context, imageURL, holder.charactersImage)
             holder.charactersName.text = marvelCharacter.name ?: marvelCharacter.title
             holder.itemView.setOnClickListener {
                 marvelHeroesUIModel.onMarvelHeroClicked?.let { it1 -> it1(marvelCharacter) }

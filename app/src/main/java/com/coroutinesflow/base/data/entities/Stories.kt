@@ -2,7 +2,6 @@ package com.coroutinesflow.base.data.entities
 
 import android.os.Parcelable
 import androidx.room.TypeConverters
-import com.coroutinesflow.base.data.entities.Items
 import com.coroutinesflow.frameworks.db.ItemsDataConverter
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
