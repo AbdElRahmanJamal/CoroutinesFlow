@@ -2,7 +2,6 @@ package com.coroutinesflow.frameworks.network
 
 import com.coroutinesflow.AppExceptions
 import com.coroutinesflow.base.data.APIState
-import com.coroutinesflow.base.data.BaseModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -10,30 +9,16 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.Response
 
-const val TIME_OUT_IN_MILLIS_SECOND = 10000L
-@ExperimentalCoroutinesApi
-suspend fun <RESPONSE : BaseModel<RESPONSE>> getRemoteDate(
-    apiID: String,
-    iODispatcher: CoroutineDispatcher,
-    function: suspend NetworkHandler<RESPONSE>. () -> Response<RESPONSE>
-): Flow<APIState<RESPONSE>> =
-    NetworkHandler<RESPONSE>().getRemoteDataAPI(apiID, function, iODispatcher)
-
-val apisJobsHashMap = HashMap<String, Job>()
-
-fun cancelJob(apiID: String): Boolean {
-    if (apisJobsHashMap.size > 0 && apisJobsHashMap.containsKey(apiID))
-        apisJobsHashMap.getValue(apiID).cancel()
-    return apisJobsHashMap.getValue(apiID).isCancelled
-}
-
 class NetworkHandler<RESPONSE : Any> {
 
+    private val timeOutInMillisSecond = 10000L
+    private val apisJobsHashMap = HashMap<String, Job>()
     private lateinit var state: APIState<RESPONSE>
     private lateinit var response: Response<RESPONSE>
 
+
     @ExperimentalCoroutinesApi
-    suspend fun getRemoteDataAPI(
+    private suspend fun getRemoteDataAPI(
         apiID: String,
         function: suspend NetworkHandler<RESPONSE>.() -> Response<RESPONSE>,
         iODispatcher: CoroutineDispatcher
@@ -41,7 +26,7 @@ class NetworkHandler<RESPONSE : Any> {
         flow {
             runCatching {
                 CoroutineScope(iODispatcher).launch {
-                    withTimeout(TIME_OUT_IN_MILLIS_SECOND) {
+                    withTimeout(timeOutInMillisSecond) {
                         withContext(iODispatcher) {
                             response = function.invoke(this@NetworkHandler)
                         }
@@ -73,5 +58,20 @@ class NetworkHandler<RESPONSE : Any> {
                 APIState.DataStat(it)
             }
         } ?: APIState.ErrorState(AppExceptions.HttpException)
+
+
+    @ExperimentalCoroutinesApi
+    suspend fun getRemoteDate(
+        apiID: String,
+        iODispatcher: CoroutineDispatcher,
+        function: suspend NetworkHandler<RESPONSE>. () -> Response<RESPONSE>
+    ): Flow<APIState<RESPONSE>> =
+        NetworkHandler<RESPONSE>().getRemoteDataAPI(apiID, function, iODispatcher)
+
+    fun cancelJob(apiID: String): Boolean {
+        if (apisJobsHashMap.size > 0 && apisJobsHashMap.containsKey(apiID))
+            apisJobsHashMap.getValue(apiID).cancel()
+        return apisJobsHashMap.getValue(apiID).isCancelled
+    }
 }
 
