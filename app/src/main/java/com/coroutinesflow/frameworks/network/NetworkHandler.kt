@@ -18,11 +18,11 @@ class NetworkHandler<RESPONSE : Any> {
 
 
     @ExperimentalCoroutinesApi
-    private suspend fun getRemoteDataAPI(
+    fun callAPI(
         apiID: String,
         iODispatcher: CoroutineDispatcher,
         function: suspend () -> Response<RESPONSE>
-    ): Flow<APIState<RESPONSE>> =
+    )=
         flow {
             runCatching {
                 CoroutineScope(iODispatcher).launch {
@@ -58,14 +58,6 @@ class NetworkHandler<RESPONSE : Any> {
                 APIState.DataStat(it)
             }
         } ?: APIState.ErrorState(AppExceptions.HttpException)
-
-
-    @ExperimentalCoroutinesApi
-    suspend fun callAPI(
-        apiID: String,
-        iODispatcher: CoroutineDispatcher,
-        function: suspend () -> Response<RESPONSE>
-    ) = getRemoteDataAPI(apiID, iODispatcher, function)
 
     fun cancelJob(apiID: String): Boolean {
         if (apisJobsHashMap.size > 0 && apisJobsHashMap.containsKey(apiID))
