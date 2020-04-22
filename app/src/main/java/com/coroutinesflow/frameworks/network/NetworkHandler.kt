@@ -28,7 +28,7 @@ class NetworkHandler<RESPONSE : Any> {
                 CoroutineScope(iODispatcher).launch {
                     withTimeout(timeOutInMillisSecond) {
                         withContext(iODispatcher) {
-                            response = function.invoke()
+                            response = function()
                         }
                     }
                 }
