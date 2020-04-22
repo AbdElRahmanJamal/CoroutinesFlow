@@ -15,28 +15,28 @@ class HeroDetailsRemoteDataStore(
     //Comics
     @ExperimentalCoroutinesApi
     suspend fun marvelHeroCharacterComicsList(apiID: String, characterId: Int) =
-        networkHandler.getRemoteDate(apiID, iODispatcher) {
+        networkHandler.callAPI(apiID, iODispatcher) {
             aPIs.marvelHeroCharacterComicsListSuspend(characterId)
         }
 
     //Series
     @ExperimentalCoroutinesApi
     suspend fun marvelHeroCharacterSeriesList(apiID: String, characterId: Int) =
-        networkHandler.getRemoteDate(apiID, iODispatcher) {
+        networkHandler.callAPI(apiID, iODispatcher) {
             aPIs.marvelHeroCharacterSeriesListSuspend(characterId)
         }
 
     //Stories
     @ExperimentalCoroutinesApi
     suspend fun marvelHeroCharacterStoriesList(apiID: String, characterId: Int) =
-        networkHandler.getRemoteDate(apiID, iODispatcher) {
+        networkHandler.callAPI(apiID, iODispatcher) {
             aPIs.marvelHeroCharacterStoriesListSuspend(characterId)
         }
 
     //Events
     @ExperimentalCoroutinesApi
     suspend fun marvelHeroCharacterEventsList(apiID: String, characterId: Int) =
-        networkHandler.getRemoteDate(apiID, iODispatcher) {
+        networkHandler.callAPI(apiID, iODispatcher) {
             aPIs.marvelHeroCharacterEventsListSuspend(characterId)
         }
 

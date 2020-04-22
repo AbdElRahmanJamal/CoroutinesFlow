@@ -14,7 +14,7 @@ class MarvelHomeRemoteDataStore(
 
     @ExperimentalCoroutinesApi
     suspend fun getListOfMarvelHeroesCharacters(apiID: String, limit: Int = 10, offset: Int = 0) =
-        networkHandler.getRemoteDate(apiID, iODispatcher) {
+        networkHandler.callAPI(apiID, iODispatcher) {
             aPIs.getMarvelCharactersSuspend(limit, offset)
         }
 

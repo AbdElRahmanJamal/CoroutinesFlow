@@ -2,12 +2,9 @@ package com.coroutinesflow.features.hero_details.data.domain
 
 import com.coroutinesflow.base.data.APIState
 import com.coroutinesflow.features.hero_details.data.HeroDetailsRepository
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onStart
+import com.coroutinesflow.features.hero_details.data.entities.HeroDetailsPageUIModel
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 
 
 class HeroDetailsUseCase(
@@ -28,24 +25,28 @@ class HeroDetailsUseCase(
 //            awaitAll(
 //                CoroutineScope(iODispatcher).async {
 //                    heroDetailsRepository.marvelHeroCharacterComicsList(
+//                        "ID1",
 //                        sectionID,
 //                        characterId
 //                    )
 //                },
 //                CoroutineScope(iODispatcher).async {
 //                    heroDetailsRepository.marvelHeroCharacterStoriesList(
+//                        "ID2",
 //                        sectionID,
 //                        characterId
 //                    )
 //                },
 //                CoroutineScope(iODispatcher).async {
 //                    heroDetailsRepository.marvelHeroCharacterSeriesList(
+//                        "ID3",
 //                        sectionID,
 //                        characterId
 //                    )
 //                },
 //                CoroutineScope(iODispatcher).async {
 //                    heroDetailsRepository.marvelHeroCharacterEventsList(
+//                        "ID4",
 //                        sectionID,
 //                        characterId
 //                    )
@@ -66,7 +67,7 @@ class HeroDetailsUseCase(
 //            )
 //        )
 //    }.flowOn(iODispatcher).onStart { emit(HeroDetailsPageUIModel(APIState.LoadingState)) }
-//
+
 
     @ExperimentalCoroutinesApi
     suspend fun getHeroDetailsPageDataComics(apiID: String, sectionID: String, characterId: Int) =
