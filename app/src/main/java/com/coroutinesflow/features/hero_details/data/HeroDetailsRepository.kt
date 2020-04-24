@@ -5,17 +5,21 @@ import com.coroutinesflow.base.data.entities.MarvelCharacters
 import com.coroutinesflow.features.hero_details.data.entities.MarvelHeroDetailsTable
 import com.coroutinesflow.features.hero_details.data.local_datastore.HeroDetailsLocalDataStore
 import com.coroutinesflow.features.hero_details.data.remote_datastore.HeroDetailsRemoteDataStore
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onStart
 
 class HeroDetailsRepository(
     private val heroDetailsRemoteDataStore: HeroDetailsRemoteDataStore
-    , private val heroDetailsLocalDataStore: HeroDetailsLocalDataStore
+    , private val heroDetailsLocalDataStore: HeroDetailsLocalDataStore,
+    private val iODispatcher: CoroutineDispatcher
 ) {
     //Comics
     @ExperimentalCoroutinesApi
-    suspend fun marvelHeroCharacterComicsList(apiID: String, sectionID: String, characterId: Int) =
+    fun marvelHeroCharacterComicsList(apiID: String, sectionID: String, characterId: Int) =
         flow {
 
             val marvelDetailsSection: MarvelHeroDetailsTable =
@@ -30,11 +34,11 @@ class HeroDetailsRepository(
                         handleOnStateChange(state, sectionID, characterId)
                     }
             }
-        }
+        }.onStart { emit(APIState.LoadingState) }.flowOn(iODispatcher)
 
     //Series
     @ExperimentalCoroutinesApi
-    suspend fun marvelHeroCharacterSeriesList(apiID: String, sectionID: String, characterId: Int) =
+    fun marvelHeroCharacterSeriesList(apiID: String, sectionID: String, characterId: Int) =
         flow {
 
             val marvelDetailsSection: MarvelHeroDetailsTable =
@@ -49,12 +53,12 @@ class HeroDetailsRepository(
                         handleOnStateChange(state, sectionID, characterId)
                     }
             }
-        }
+        }.onStart { emit(APIState.LoadingState) }.flowOn(iODispatcher)
 
 
     //Stories
     @ExperimentalCoroutinesApi
-    suspend fun marvelHeroCharacterStoriesList(apiID: String, sectionID: String, characterId: Int) =
+    fun marvelHeroCharacterStoriesList(apiID: String, sectionID: String, characterId: Int) =
         flow {
 
             val marvelDetailsSection: MarvelHeroDetailsTable =
@@ -69,11 +73,11 @@ class HeroDetailsRepository(
                         handleOnStateChange(state, sectionID, characterId)
                     }
             }
-        }
+        }.onStart { emit(APIState.LoadingState) }.flowOn(iODispatcher)
 
     //Events
     @ExperimentalCoroutinesApi
-    suspend fun marvelHeroCharacterEventsList(apiID: String, sectionID: String, characterId: Int) =
+    fun marvelHeroCharacterEventsList(apiID: String, sectionID: String, characterId: Int) =
         flow {
 
             val marvelDetailsSection: MarvelHeroDetailsTable =
@@ -88,7 +92,7 @@ class HeroDetailsRepository(
                         handleOnStateChange(state, sectionID, characterId)
                     }
             }
-        }
+        }.onStart { emit(APIState.LoadingState) }.flowOn(iODispatcher)
 
     fun cancelAPICall(apiID: String) = heroDetailsRemoteDataStore.cancelAPICall(apiID)
 

@@ -3,13 +3,13 @@ package com.coroutinesflow.frameworks.network
 import com.coroutinesflow.AppExceptions
 import com.coroutinesflow.base.data.APIState
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.Response
 
-class NetworkHandler<RESPONSE : Any> {
+class NetworkHandler<RESPONSE : Any>(private val iODispatcher: CoroutineDispatcher) {
 
     private val timeOutInMillisSecond = 10000L
     private val apisJobsHashMap = HashMap<String, Job>()
@@ -20,7 +20,6 @@ class NetworkHandler<RESPONSE : Any> {
     @ExperimentalCoroutinesApi
     fun callAPI(
         apiID: String,
-        iODispatcher: CoroutineDispatcher,
         function: suspend () -> Response<RESPONSE>
     )=
         flow {
@@ -47,17 +46,17 @@ class NetworkHandler<RESPONSE : Any> {
             }
         }.catch {
             emit(APIState.ErrorState(AppExceptions.GenericErrorException))
-        }.flowOn(iODispatcher)
+        }.flowOn(iODispatcher).distinctUntilChanged()
 
 
     private fun getDataOrThrowException(response: Response<RESPONSE>) =
         response.body()?.let {
             if (it.toString().isEmpty()) {
-                APIState.ErrorState(AppExceptions.HttpException)
+                APIState.ErrorState(AppExceptions.EmptyResponseException)
             } else {
                 APIState.DataStat(it)
             }
-        } ?: APIState.ErrorState(AppExceptions.HttpException)
+        } ?: APIState.ErrorState(AppExceptions.NullResponseException)
 
     fun cancelJob(apiID: String): Boolean {
         if (apisJobsHashMap.size > 0 && apisJobsHashMap.containsKey(apiID))

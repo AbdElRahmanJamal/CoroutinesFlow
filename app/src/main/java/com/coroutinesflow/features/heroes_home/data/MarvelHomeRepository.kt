@@ -18,10 +18,10 @@ class MarvelHomeRepository(
 ) {
 
     @ExperimentalCoroutinesApi
-    suspend fun getListOfMarvelHeroesCharacters(
+    fun getListOfMarvelHeroesCharacters(
         apiID: String,
-        limit: Int = 10,
-        offset: Int = 0,
+        limit: Int,
+        offset: Int,
         homeID: String
     ) =
         flow {

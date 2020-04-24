@@ -16,17 +16,21 @@ import org.koin.dsl.module.module
 object MarvelHomeHeroesDependencyInjection {
 
     val homeViewModelFactoryObject: Module = module {
+
         factory { HomeViewModelFactory(get(), Dispatchers.Main) }
-        factory { MarvelHomeRepository(get(), get(), Dispatchers.IO) }
-        factory { NetworkHandler<MarvelCharacters>() }
-        factory { MarvelHomeRemoteDataStore(get(), get(), Dispatchers.IO) }
+
         factory {
-            MarvelHomeLocalDataStore(
-                MarvelCharactersDB(
-                    androidApplication()
-                ).marvelCharactersDao()
+            MarvelHomeRepository(
+                get(), MarvelHomeLocalDataStore(
+                    MarvelCharactersDB(
+                        androidApplication()
+                    ).marvelCharactersDao()
+                ), Dispatchers.IO
             )
         }
+        factory { NetworkHandler<MarvelCharacters>(Dispatchers.IO) }
+        factory { MarvelHomeRemoteDataStore(get(), get()) }
+
     }
 
 }
