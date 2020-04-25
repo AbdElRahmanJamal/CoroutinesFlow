@@ -1,5 +1,8 @@
 package com.coroutinesflow
 
+import com.coroutinesflow.base.data.APIState
+import com.coroutinesflow.base.data.entities.Data
+import com.coroutinesflow.base.data.entities.MarvelCharacters
 import com.coroutinesflow.base.data.entities.Results
 import com.coroutinesflow.features.heroes_home.data.entities.MarvelHomeTable
 import com.coroutinesflow.features.heroes_home.data.local_datastore.MarvelHomeLocalDataStore
@@ -9,22 +12,31 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
+import org.powermock.api.mockito.PowerMockito
+import org.powermock.core.classloader.annotations.PrepareForTest
+import org.powermock.modules.junit4.PowerMockRunner
 
+fun <T> anyOrNull(): T = Mockito.any<T>()
+
+
+@RunWith(PowerMockRunner::class)
+@PrepareForTest(MarvelHomeLocalDataStore::class)
 class TestMarvelHomeLocalDataStore {
 
     @Mock
     private lateinit var marvelCharactersDao: MarvelCharactersDao
     private lateinit var marvelHomeLocalDataStore: MarvelHomeLocalDataStore
-    val homeID = "homeID"
+    private val homeID = "HomeID"
 
     @ExperimentalCoroutinesApi
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        marvelHomeLocalDataStore = MarvelHomeLocalDataStore(marvelCharactersDao)
+        marvelHomeLocalDataStore = PowerMockito.spy(MarvelHomeLocalDataStore(marvelCharactersDao))
     }
 
     @ExperimentalCoroutinesApi
@@ -72,12 +84,30 @@ class TestMarvelHomeLocalDataStore {
     @Test
     fun test_insert_data_into_data_base() = runBlockingTest {
 
-        val listOfMarvelCharacter = MarvelHomeTable(
+        val marvelHomeTable = MarvelHomeTable(
             homeID,
             mutableListOf()
         )
-        marvelHomeLocalDataStore.updateInsertMarvelHeroesCharacters(listOfMarvelCharacter)
 
-        Mockito.verify(marvelCharactersDao).updateInsertMarvelHeroesCharacters(listOfMarvelCharacter)
+        val marvelCharacters = MarvelCharacters(
+            0, 0, "", ""
+            , "", "", "", Data(0, 0, 0, 0, emptyList())
+        )
+        val dataState = APIState.DataStat(marvelCharacters)
+
+        marvelHomeLocalDataStore.insertRemoteDataIntoDB(homeID, dataState)
+
+        PowerMockito.doReturn(marvelHomeTable).`when`(
+            marvelHomeLocalDataStore, "createMarvelHomeTableObject",
+            homeID, dataState
+        )
+
+        PowerMockito.verifyPrivate(marvelHomeLocalDataStore).invoke(
+            "createMarvelHomeTableObject",
+            homeID, dataState
+        )
+
+        Mockito.verify(marvelCharactersDao).updateInsertMarvelHeroesCharacters(anyOrNull())
+
     }
 }

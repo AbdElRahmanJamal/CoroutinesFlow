@@ -1,6 +1,7 @@
 package com.coroutinesflow.features.heroes_home.data
 
 import com.coroutinesflow.base.data.APIState
+import com.coroutinesflow.base.data.entities.MarvelCharacters
 import com.coroutinesflow.features.heroes_home.data.entities.MarvelHomeTable
 import com.coroutinesflow.features.heroes_home.data.local_datastore.MarvelHomeLocalDataStore
 import com.coroutinesflow.features.heroes_home.data.remote_datastore.MarvelHomeRemoteDataStore
@@ -34,18 +35,16 @@ class MarvelHomeRepository(
                 marvelHomeRemoteDataStore.getListOfMarvelHeroesCharacters(apiID, limit, offset)
                     .collect { states ->
                         when (states) {
-                            is APIState.LoadingState -> emit(APIState.LoadingState)
                             is APIState.ErrorState -> emit(APIState.ErrorState(states.throwable))
                             is APIState.DataStat -> {
                                 emit(APIState.DataStat(states.value.data.results))
-                                marvelHomeLocalDataStore.updateInsertMarvelHeroesCharacters(
-                                    MarvelHomeTable(homeID, states.value.data.results)
-                                )
+                                marvelHomeLocalDataStore.insertRemoteDataIntoDB(homeID, states)
                             }
                         }
                     }
             }
         }.onStart { emit(APIState.LoadingState) }.flowOn(iODispatcher)
+
 
     fun cancelAPICall(apiID: String) = marvelHomeRemoteDataStore.cancelAPICall(apiID)
 
