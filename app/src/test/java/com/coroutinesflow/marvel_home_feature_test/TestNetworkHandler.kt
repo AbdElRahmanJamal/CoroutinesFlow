@@ -1,5 +1,6 @@
-package com.coroutinesflow
+package com.coroutinesflow.marvel_home_feature_test
 
+import com.coroutinesflow.AppExceptions
 import com.coroutinesflow.base.data.APIState
 import com.coroutinesflow.base.data.entities.Data
 import com.coroutinesflow.base.data.entities.MarvelCharacters
@@ -14,9 +15,9 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito
 import org.mockito.Mockito.spy
 import org.mockito.MockitoAnnotations
-import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
 import retrofit2.Response
@@ -127,4 +128,23 @@ class TestNetworkHandler {
 
     private fun fakeApiRequestCatchCancellationException(): Response<MarvelCharacters> = Response.success(marvelCharacters)
 
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `test cancel cancel aPI call success`() = runBlockingTest {
+        Mockito.`when`(
+            networkHandler.cancelJob(apiID)
+        ).thenReturn(true)
+
+        Assert.assertTrue(networkHandler.cancelJob(apiID))
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `test cancel cancel aPI call failed`() = runBlockingTest {
+        Mockito.`when`(
+            networkHandler.cancelJob(apiID)
+        ).thenReturn(false)
+
+        Assert.assertFalse(networkHandler.cancelJob(apiID))
+    }
 }

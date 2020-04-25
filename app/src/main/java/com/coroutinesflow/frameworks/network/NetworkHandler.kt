@@ -59,9 +59,11 @@ class NetworkHandler<RESPONSE : Any>(private val iODispatcher: CoroutineDispatch
         } ?: APIState.ErrorState(AppExceptions.NullResponseException)
 
     fun cancelJob(apiID: String): Boolean {
-        if (apisJobsHashMap.size > 0 && apisJobsHashMap.containsKey(apiID))
+        return if (apisJobsHashMap.size > 0 && apisJobsHashMap.containsKey(apiID)) {
             apisJobsHashMap.getValue(apiID).cancel()
-        return apisJobsHashMap.getValue(apiID).isCancelled
+            apisJobsHashMap.getValue(apiID).isCancelled
+        } else false
+
     }
 }
 

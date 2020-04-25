@@ -1,5 +1,6 @@
-package com.coroutinesflow
+package com.coroutinesflow.marvel_home_feature_test
 
+import com.coroutinesflow.AppExceptions
 import com.coroutinesflow.base.data.APIState
 import com.coroutinesflow.base.data.entities.Data
 import com.coroutinesflow.base.data.entities.MarvelCharacters
@@ -179,16 +180,37 @@ class TestMarvelHomeRepository {
         Assert.assertTrue(apiStates[0] is APIState.LoadingState)
         Assert.assertTrue(apiStates[1] is APIState.ErrorState)
     }
-}
 
-private fun listOfHeroesNotEmptyList(): MutableList<Results> {
-    val listOfHeroes = mutableListOf<Results>()
 
-    listOfHeroes.add(
-        Results(
-            0, "", "", "",
-            null, "", null, null, null, null, null, null
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `test cancel cancel aPI call success`() = runBlockingTest {
+        Mockito.`when`(
+            marvelHomeRemoteDataStore.cancelAPICall(apiID)
+        ).thenReturn(true)
+
+        Assert.assertTrue(marvelHomeRepository.cancelAPICall(apiID))
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `test cancel cancel aPI call failed`() = runBlockingTest {
+        Mockito.`when`(
+            marvelHomeRemoteDataStore.cancelAPICall(apiID)
+        ).thenReturn(false)
+
+        Assert.assertFalse(marvelHomeRepository.cancelAPICall(apiID))
+    }
+
+    private fun listOfHeroesNotEmptyList(): MutableList<Results> {
+        val listOfHeroes = mutableListOf<Results>()
+
+        listOfHeroes.add(
+            Results(
+                0, "", "", "",
+                null, "", null, null, null, null, null, null
+            )
         )
-    )
-    return listOfHeroes
+        return listOfHeroes
+    }
 }

@@ -1,5 +1,6 @@
-package com.coroutinesflow
+package com.coroutinesflow.marvel_home_feature_test
 
+import com.coroutinesflow.AppExceptions
 import com.coroutinesflow.base.data.APIState
 import com.coroutinesflow.base.data.APIs
 import com.coroutinesflow.base.data.entities.Data
@@ -26,7 +27,7 @@ class TestMarvelHomeRemoteDataStore {
     private val testCoroutineDispatcher = TestCoroutineDispatcher()
 
     @Mock
-    private lateinit var networkHandler: NetworkHandler<MarvelCharacters>
+    private lateinit var spyNetworkHandler: NetworkHandler<MarvelCharacters>
 
     @Mock
     private lateinit var aPIs: APIs
@@ -44,8 +45,8 @@ class TestMarvelHomeRemoteDataStore {
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        networkHandler = Mockito.spy(NetworkHandler(testCoroutineDispatcher))
-        marvelHomeRemoteDataStore = MarvelHomeRemoteDataStore(networkHandler, aPIs)
+        spyNetworkHandler = Mockito.spy(NetworkHandler(testCoroutineDispatcher))
+        marvelHomeRemoteDataStore = MarvelHomeRemoteDataStore(spyNetworkHandler, aPIs)
     }
 
     @ExperimentalCoroutinesApi
@@ -56,7 +57,7 @@ class TestMarvelHomeRemoteDataStore {
             fakeApiRequestDataResponse()
         )
 
-        Mockito.`when`(networkHandler.callAPI(apiID) {
+        Mockito.`when`(spyNetworkHandler.callAPI(apiID) {
             any()
         }).thenReturn(flow {
             emit(APIState.DataStat(marvelCharacters))
@@ -80,7 +81,7 @@ class TestMarvelHomeRemoteDataStore {
             fakeApiRequestNullExceptionResponse()
         )
 
-        Mockito.`when`(networkHandler.callAPI(apiID) {
+        Mockito.`when`(spyNetworkHandler.callAPI(apiID) {
             any()
         }).thenReturn(flow {
             emit(APIState.ErrorState(AppExceptions.NullResponseException))
@@ -106,7 +107,7 @@ class TestMarvelHomeRemoteDataStore {
             fakeApiRequestEmptyExceptionResponse()
         )
 
-        Mockito.`when`(networkHandler.callAPI(apiID) {
+        Mockito.`when`(spyNetworkHandler.callAPI(apiID) {
             any()
         }).thenReturn(flow {
             emit(APIState.ErrorState(AppExceptions.EmptyResponseException))
@@ -123,4 +124,24 @@ class TestMarvelHomeRemoteDataStore {
 
     private fun fakeApiRequestEmptyExceptionResponse() =
         Response.success("") as Response<MarvelCharacters>
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `test cancel cancel aPI call success`() = runBlockingTest {
+        Mockito.`when`(
+            spyNetworkHandler.cancelJob(apiID)
+        ).thenReturn(true)
+
+        Assert.assertTrue(marvelHomeRemoteDataStore.cancelAPICall(apiID))
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `test cancel cancel aPI call failed`() = runBlockingTest {
+        Mockito.`when`(
+            spyNetworkHandler.cancelJob(apiID)
+        ).thenReturn(false)
+
+        Assert.assertFalse(marvelHomeRemoteDataStore.cancelAPICall(apiID))
+    }
 }

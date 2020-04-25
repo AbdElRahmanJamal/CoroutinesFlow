@@ -1,4 +1,4 @@
-package com.coroutinesflow
+package com.coroutinesflow.marvel_home_feature_test
 
 import com.coroutinesflow.base.data.APIState
 import com.coroutinesflow.base.data.entities.Data
