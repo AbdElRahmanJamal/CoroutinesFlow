@@ -103,13 +103,7 @@ class HeroDetailsRepository(
         characterId: Int
     ) {
         if (state is APIState.DataStat) {
-            heroDetailsLocalDataStore.updateInsertMarvelDetails(
-                MarvelHeroDetailsTable(
-                    sectionID,
-                    characterId,
-                    state.value.data.results
-                )
-            )
+            heroDetailsLocalDataStore.insertRemoteDataIntoDB(sectionID, characterId, state)
         }
     }
 
