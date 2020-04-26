@@ -7,10 +7,10 @@ import com.coroutinesflow.features.hero_details.data.entities.MarvelHeroDetailsT
 class HeroDetailsLocalDataStore(private val marvelHeroDerailsDao: MarvelHeroDerailsDao) {
 
 
-    suspend fun marvelHeroCharacterDetails(
+    suspend fun getMarvelHeroCharacterDetails(
         sectionID: String,
         charID: Int
-    ) = marvelHeroDerailsDao.marvelHeroCharacterDetails(sectionID, charID)
+    ) = marvelHeroDerailsDao.getMarvelHeroCharacterDetails(sectionID, charID)
 
 
     private fun createMarvelHeroDetailsTableObject(

@@ -10,18 +10,13 @@ import com.coroutinesflow.base.data.APIState
 import com.coroutinesflow.base.data.entities.Results
 import com.coroutinesflow.base.view.BaseScreenFragment
 import com.coroutinesflow.features.hero_details.data.di.MarvelHeroDetailsDependencyInjection.heroDetailsViewModelFactoryObject
+import com.coroutinesflow.features.hero_details.data.entities.HeroDetailsSectionsID
 import com.coroutinesflow.frameworks.network.apiFactory
 import kotlinx.android.synthetic.main.hero_details_fragment.*
 import kotlinx.android.synthetic.main.marvel_page_details_section.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.startKoin
-
-const val COMICS = "Comics"
-const val SERIES = "Series"
-const val STORIES = "Stories"
-const val EVENTS = "Events"
-
 
 class HeroDetailsFragment : BaseScreenFragment() {
 
@@ -56,27 +51,27 @@ class HeroDetailsFragment : BaseScreenFragment() {
             with(ViewModelProvider(this, factory).get(HeroDetailsViewModel::class.java)) {
 
 
-                getHeroDetailsPageDataComics(COMICS_API, COMICS, heroModel.id)
+                getHeroSectionListDetails(COMICS_API, HeroDetailsSectionsID.COMICS, heroModel.id)
                     .observe(viewLifecycleOwner, Observer {
-                        comics.section_title.text = COMICS
+                        comics.section_title.text = HeroDetailsSectionsID.COMICS.name
                         handleSectionStates(COMICS_API, it, comics)
                     })
 
-                getHeroDetailsPageDataSeries(SERIES_API, SERIES, heroModel.id)
+                getHeroSectionListDetails(SERIES_API, HeroDetailsSectionsID.SERIES, heroModel.id)
                     .observe(viewLifecycleOwner, Observer {
-                        series.section_title.text = SERIES
+                        series.section_title.text = HeroDetailsSectionsID.SERIES.name
                         handleSectionStates(SERIES_API, it, series)
                     })
 
-                getHeroDetailsPageDataStories(STORIES_API, STORIES, heroModel.id)
+                getHeroSectionListDetails(STORIES_API, HeroDetailsSectionsID.STORIES, heroModel.id)
                     .observe(viewLifecycleOwner, Observer {
-                        stories.section_title.text = STORIES
+                        stories.section_title.text = HeroDetailsSectionsID.STORIES.name
                         handleSectionStates(STORIES_API, it, stories)
                     })
 
-                getHeroDetailsPageDataEvents(EVENTS_API, EVENTS, heroModel.id)
+                getHeroSectionListDetails(EVENTS_API, HeroDetailsSectionsID.EVENTS, heroModel.id)
                     .observe(viewLifecycleOwner, Observer {
-                        events.section_title.text = EVENTS
+                        events.section_title.text = HeroDetailsSectionsID.EVENTS.name
                         handleSectionStates(EVENTS_API, it, events)
                     })
 

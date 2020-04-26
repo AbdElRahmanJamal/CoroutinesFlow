@@ -49,15 +49,15 @@ class TestHeroDetailsLocalDataStore {
                 null, "", null, null, null, null, null, null
             )
         )
-        Mockito.`when`(marvelHeroDerailsDao.marvelHeroCharacterDetails(sectionID, characterID))
+        Mockito.`when`(marvelHeroDerailsDao.getMarvelHeroCharacterDetails(sectionID, characterID))
             .thenReturn(
                 MarvelHeroDetailsTable(sectionID, characterID, listOfHeroes)
             )
-        val charData = heroDetailsLocalDataStore.marvelHeroCharacterDetails(sectionID, characterID)
+        val charData = heroDetailsLocalDataStore.getMarvelHeroCharacterDetails(sectionID, characterID)
         Assert.assertTrue(charData.sectionID == sectionID)
         Assert.assertTrue(charData.heroID == characterID)
         Assert.assertFalse(charData.heroSectionList.isNullOrEmpty())
-        Mockito.verify(marvelHeroDerailsDao).marvelHeroCharacterDetails(sectionID, characterID)
+        Mockito.verify(marvelHeroDerailsDao).getMarvelHeroCharacterDetails(sectionID, characterID)
 
     }
 
@@ -65,15 +65,15 @@ class TestHeroDetailsLocalDataStore {
     @Test
     fun test_get_data_from_data_base_no_data() = runBlockingTest {
 
-        Mockito.`when`(marvelHeroDerailsDao.marvelHeroCharacterDetails(sectionID, characterID))
+        Mockito.`when`(marvelHeroDerailsDao.getMarvelHeroCharacterDetails(sectionID, characterID))
             .thenReturn(
                 MarvelHeroDetailsTable(sectionID, characterID, emptyList())
             )
 
-        val charData = heroDetailsLocalDataStore.marvelHeroCharacterDetails(sectionID, characterID)
+        val charData = heroDetailsLocalDataStore.getMarvelHeroCharacterDetails(sectionID, characterID)
 
         Assert.assertTrue(charData.heroSectionList.isNullOrEmpty())
-        Mockito.verify(marvelHeroDerailsDao).marvelHeroCharacterDetails(sectionID, characterID)
+        Mockito.verify(marvelHeroDerailsDao).getMarvelHeroCharacterDetails(sectionID, characterID)
 
     }
 

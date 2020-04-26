@@ -14,7 +14,7 @@ interface MarvelHeroDerailsDao {
     suspend fun updateInsertMarvelDetails(comicsListMarvel: MarvelHeroDetailsTable)
 
     @Query("select * from marvel_hero_details_table where sectionID=:sectionID and heroID=:charID")
-    suspend fun marvelHeroCharacterDetails(
+    suspend fun getMarvelHeroCharacterDetails(
         sectionID: String,
         charID: Int
     ): MarvelHeroDetailsTable

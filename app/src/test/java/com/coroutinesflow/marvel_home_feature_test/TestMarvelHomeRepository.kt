@@ -184,7 +184,7 @@ class TestMarvelHomeRepository {
 
     @ExperimentalCoroutinesApi
     @Test
-    fun `test cancel cancel aPI call success`() = runBlockingTest {
+    fun `test cancel aPI call success`() = runBlockingTest {
         Mockito.`when`(
             marvelHomeRemoteDataStore.cancelAPICall(apiID)
         ).thenReturn(true)
@@ -194,7 +194,7 @@ class TestMarvelHomeRepository {
 
     @ExperimentalCoroutinesApi
     @Test
-    fun `test cancel cancel aPI call failed`() = runBlockingTest {
+    fun `test cancel aPI call failed`() = runBlockingTest {
         Mockito.`when`(
             marvelHomeRemoteDataStore.cancelAPICall(apiID)
         ).thenReturn(false)
