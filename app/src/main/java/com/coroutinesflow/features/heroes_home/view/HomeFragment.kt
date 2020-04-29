@@ -30,7 +30,7 @@ class HomeFragment : BaseScreenFragment() {
     override fun startKoinDependancyInjection() =
         startKoin(context!!.applicationContext, listOf(apiFactory, homeViewModelFactoryObject))
 
-    private lateinit var marvelHeroesAdapter: MarvelHeroesAdapter
+    private lateinit var marvelHeroesAdapter: MarvelHeroesListAdapter
 
     @ExperimentalCoroutinesApi
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -59,11 +59,13 @@ class HomeFragment : BaseScreenFragment() {
 
     private fun showContent(results: List<Results>) {
         super.showScreenContent()
-        val marvelHeroesUIModel = MarvelHeroesUIModel(results as MutableList<Results>, null)
-        marvelHeroesAdapter.setMarvelCharacters(marvelHeroesUIModel.apply {
-            onMarvelHeroClicked = {
-                goToHereDetailsPage(it)
-            }
+
+        marvelHeroesAdapter.submitList(results.map { heroItem ->
+            MarvelHeroesUIModel(heroItem = heroItem,
+                onMarvelHeroClicked = {
+                    goToHereDetailsPage(it)
+                }
+            )
         })
     }
 
@@ -76,7 +78,7 @@ class HomeFragment : BaseScreenFragment() {
     }
 
     private fun initRecView() {
-        marvelHeroesAdapter = MarvelHeroesAdapter()
+        marvelHeroesAdapter = MarvelHeroesListAdapter()
         marvel_character_recView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = marvelHeroesAdapter

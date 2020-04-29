@@ -16,8 +16,7 @@
     <fragment
         android:id="@+id/heroDetailsFragment"
         android:name="com.coroutinesflow.features.hero_details.view.HeroDetailsFragment"
-        android:label="hero_details_fragment"
-        tools:layout="@layout/hero_details_fragment" >
+        tools:layout="@layout/hero_details_fragment">
         <argument
             android:name="marvelHero"
             app:argType="com.coroutinesflow.base.data.entities.Results" />

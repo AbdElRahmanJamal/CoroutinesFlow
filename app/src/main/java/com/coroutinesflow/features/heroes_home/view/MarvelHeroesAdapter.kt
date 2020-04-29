@@ -1,62 +1,66 @@
 package com.coroutinesflow.features.heroes_home.view
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.coroutinesflow.R
 import com.coroutinesflow.features.heroes_home.data.entities.MarvelHeroesUIModel
 import com.coroutinesflow.frameworks.downloadImage
 import kotlinx.android.synthetic.main.marvel_hero_item.view.*
 
-class MarvelHeroesAdapter :
-    RecyclerView.Adapter<MarvelHeroesAdapter.MarvelCharactersViewHolder>() {
 
-    private var marvelHeroesUIModel: MarvelHeroesUIModel = MarvelHeroesUIModel(mutableListOf())
-    private lateinit var context: Context
+class MarvelHeroesListAdapter :
+    ListAdapter<MarvelHeroesUIModel, MarvelHeroesListAdapter.MarvelHeroesViewHolderAdapter>(
+        MarvelItemDiffCallback()
+    ) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MarvelCharactersViewHolder {
-        context = parent.context
-        val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.marvel_hero_item, parent, false)
-        return MarvelCharactersViewHolder(view)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        position: Int
+    ): MarvelHeroesViewHolderAdapter {
+        return MarvelHeroesViewHolderAdapter(
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.marvel_hero_item, parent, false), parent.context
+        )
     }
 
-    @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: MarvelCharactersViewHolder, position: Int) {
-        val marvelCharacter = marvelHeroesUIModel.results[position]
-        marvelCharacter.thumbnail?.let {
-            val imageURL =
-                marvelCharacter.thumbnail.path + "." + marvelCharacter.thumbnail.extension
-            imageURL.replace("http", "https")
-            downloadImage(context, imageURL, holder.charactersImage)
-            holder.charactersName.text = marvelCharacter.name ?: marvelCharacter.title
-            holder.itemView.setOnClickListener {
-                marvelHeroesUIModel.onMarvelHeroClicked?.let { it1 -> it1(marvelCharacter) }
+    override fun onBindViewHolder(holder: MarvelHeroesViewHolderAdapter, position: Int) {
+        holder.bindTo(getItem(position))
+    }
+
+    //view holder
+    class MarvelHeroesViewHolderAdapter(itemView: View, val context: Context) :
+        RecyclerView.ViewHolder(itemView) {
+
+        fun bindTo(marvelHeroesUIModel: MarvelHeroesUIModel) {
+            val heroItem = marvelHeroesUIModel.heroItem
+            heroItem.thumbnail?.let {
+                val imageURL =
+                    heroItem.thumbnail.path + "." + heroItem.thumbnail.extension
+                imageURL.replace("http", "https")
+                downloadImage(context, imageURL, itemView.character_image)
+                itemView.character_name.text = heroItem.name ?: heroItem.title
+
+                itemView.setOnClickListener {
+                    marvelHeroesUIModel.onMarvelHeroClicked?.let { it1 -> it1(heroItem) }
+                }
             }
         }
     }
 
-    internal fun setMarvelCharacters(marvelCharacters: MarvelHeroesUIModel) {
-        this.marvelHeroesUIModel.onMarvelHeroClicked = marvelCharacters.onMarvelHeroClicked
-        this.marvelHeroesUIModel.results.clear()
-        this.marvelHeroesUIModel.results.addAll(marvelCharacters.results)
-        notifyDataSetChanged()
-    }
+    private class MarvelItemDiffCallback : DiffUtil.ItemCallback<MarvelHeroesUIModel>() {
+        override fun areItemsTheSame(oldItem: MarvelHeroesUIModel, newItem: MarvelHeroesUIModel) =
+            oldItem.heroItem == newItem.heroItem
 
-    override fun getItemCount(): Int {
-        return marvelHeroesUIModel.results.size
-    }
 
-    inner class MarvelCharactersViewHolder internal constructor(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
-        val charactersImage: ImageView = itemView.character_image
-        val charactersName: TextView = itemView.character_name
-
+        override fun areContentsTheSame(
+            oldItem: MarvelHeroesUIModel,
+            newItem: MarvelHeroesUIModel
+        ) =
+            oldItem.heroItem == newItem.heroItem
     }
 }
-
